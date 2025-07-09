@@ -1,4 +1,4 @@
-<template>
+fix this as per above "<template>
   <div>
     <section class="hero">
       <div class="container">
@@ -43,7 +43,7 @@ export default {
     
     const calculateLoan = async () => {
       try {
-        const response = await api.post('/api/loans/calculate', {
+        const response = await api.post('api/loans/calculate', {
           amount: parseFloat(loanAmount.value),
           term: parseInt(loanTerm.value)
         })

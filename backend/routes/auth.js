@@ -1,113 +1,31 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
-const { body, validationResult } = require('express-validator');
-const User = require('../models/User');
-
 const router = express.Router();
+const remoteApi = require('../services/remoteApiService');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { generateToken } = require('../middleware/authMiddleware');
 
-// Register
-router.post('/register', [
-  body('email').isEmail().normalizeEmail(),
-  body('password').isLength({ min: 6 }),
-  body('firstName').notEmpty().trim(),
-  body('lastName').notEmpty().trim(),
-  body('idNumber').notEmpty().trim(),
-  body('phoneNumber').notEmpty().trim(),
-  body('gender').isIn(['male', 'female', 'other'])
-], async (req, res) => {
+router.post('/register', async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { firstName, lastName, email, password, idNumber, phoneNumber, gender } = req.body;
-
-    // Check if user exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
-
-    // Create user
-    const user = new User({
-      firstName,
-      lastName,
-      email,
-      password,
-      idNumber,
-      phoneNumber,
-      gender
-    });
-
-    await user.save();
-
-    // Generate JWT
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
-    );
-
-    res.status(201).json({
-      message: 'User registered successfully',
-      access_token: token,
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    const { password, ...rest } = req.body;
+    const hashed = await bcrypt.hash(password, 10);
+    const result = await remoteApi.post('/register', { ...rest, password: hashed });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Login
-router.post('/login', [
-  body('email').isEmail().normalizeEmail(),
-  body('password').notEmpty()
-], async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { email, password } = req.body;
-
-    // Find user
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    // Check password
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    // Generate JWT
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
-    );
-
-    res.json({
-      message: 'Login successful',
-      access_token: token,
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    const remoteResult = await remoteApi.post('/login', req.body);
+    // Assuming remote API returns user object and hashed password
+    const { user, token } = remoteResult;
+    // If remote issues its own token, you can use it or re-sign it:
+    const ourToken = generateToken({ id: user._id, email: user.email });
+    res.json({ user, token: ourToken });
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid credentials' });
   }
 });
 
