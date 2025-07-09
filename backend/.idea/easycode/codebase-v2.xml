@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/middleware/auth.js;C:/Users/User/RestoreLoans-Application/backend/models/Loan.js;C:/Users/User/RestoreLoans-Application/backend/models/Payment.js;C:/Users/User/RestoreLoans-Application/backend/models/User.js;C:/Users/User/RestoreLoans-Application/backend/routes/auth.js;C:/Users/User/RestoreLoans-Application/backend/routes/loans.js;C:/Users/User/RestoreLoans-Application/backend/routes/payments.js;C:/Users/User/RestoreLoans-Application/backend/server/server.js;C:/Users/User/RestoreLoans-Application/backend/package-lock.json;C:/Users/User/RestoreLoans-Application/backend/package.json" />
+  </component>
+</project>
