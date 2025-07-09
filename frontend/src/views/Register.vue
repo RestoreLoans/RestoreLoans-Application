@@ -1,6 +1,6 @@
 <template>
-  <div class="container" style="max-width: 500px; margin-top: 50px;">
-    <div class="card p-4 shadow">
+  <div class="register-container">
+    <div class="card register-card">
       <h2 class="text-center mb-4">Register</h2>
       
       <form @submit.prevent="handleRegister">
@@ -69,6 +69,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import '../views/css/reg.css'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -106,3 +107,4 @@ const handleRegister = async () => {
   }
 }
 </script>
+
