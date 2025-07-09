@@ -3,7 +3,9 @@
 Here's a sample README file for the Restore Loans Application:
 
 **Restore Loans Application**
-==========================
+
+**Key jwt**
+[System.Convert]::ToBase64String((1..64 | ForEach-Object {Get-Random -Max 256}))
 
 **Overview**
 ------------
