@@ -48,7 +48,7 @@ The Restore Loans Application is licensed under the MIT License.
 **Authors**
 ------------
 
-* [Your Name]
+* Restore Loans
 
 **Acknowledgments**
 ------------------
