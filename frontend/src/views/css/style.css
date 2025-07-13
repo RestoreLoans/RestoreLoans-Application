@@ -162,7 +162,7 @@ body {
   transform: translateY(-5px);
 }
 
-/* @media (max-width: 768px) {
+@media (max-width: 768px) {
   .navbar-nav {
     display: none;
   }
@@ -174,4 +174,4 @@ body {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
-} */
+}
