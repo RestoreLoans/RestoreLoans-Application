@@ -1,7 +1,7 @@
 <template>
   <div class="register-container">
     <div class="card register-card">
-      <h2 class="text-center mb-4">Register</h2>
+      <h2 class="text-center mb-4">Create Account</h2>
       
       <form @submit.prevent="handleRegister">
         <div class="form-group mb-3">

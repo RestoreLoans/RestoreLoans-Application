@@ -1,64 +1,102 @@
-fix this as per above "<template>
+<template>
   <div>
-    <section class="hero">
+    <!-- Hero Section -->
+    <section class="hero text-center py-5 bg-light">
       <div class="container">
-        <h1>Get Your Loan Today</h1>
-        <p>Fast, secure, and reliable lending solutions</p>
-        <router-link to="/register" class="btn btn-primary">Get Started</router-link>
+        <h1 class="display-4">Get Your Loan Today</h1>
+        <p class="lead">Fast, secure, and reliable lending solutions</p>
+        <br />
+<!--router-link to="/register" class="btn btn-primary btn-lg mt-3">Get Started</router-link-->
       </div>
     </section>
+
+    <!-- Calculator Section -->
+    <section class="calculator py-5">
     
-    <section class="calculator">
-      <h2>Loan Calculator</h2>
-      <div class="form-group">
-        <label>Loan Amount</label>
-        <input v-model="loanAmount" type="number" placeholder="Enter amount">
-      </div>
-      <div class="form-group">
-        <label>Loan Term (months)</label>
-        <input v-model="loanTerm" type="number" placeholder="Enter term">
-      </div>
-      <button @click="calculateLoan" class="btn btn-primary">Calculate</button>
-      
-      <div v-if="calculation" class="card" style="margin-top: 20px;">
-        <h3>Loan Details</h3>
-        <p><strong>Monthly Payment:</strong> ${{ calculation.monthlyPayment }}</p>
-        <p><strong>Total Amount:</strong> ${{ calculation.totalAmount }}</p>
-        <p><strong>Interest Rate:</strong> {{ calculation.interestRate }}%</p>
+        <div class="card p-4 shadow-sm">
+          <h2 class="mb-4 text-center">Loan Calculator</h2>
+
+          <div class="form-group mb-3">
+            <label>Loan Amount (R)</label>
+            <input v-model="loanAmount" type="number" class="form-control" placeholder="Enter amount" />
+          </div>
+
+          <div class="form-group mb-4">
+            <label>Loan Duration (months)</label>
+            <select v-model="loanDuration" class="form-control">
+              <option value="">Select Loan Duration</option>
+              <option value="1">1 month</option>
+              
+            </select>
+          </div>
+
+          
+
+          <div v-if="calculation" class="result card p-3 mt-3 bg-light border">
+            <h4 class="mb-3 text-center">Loan Details</h4>
+            <p><strong>Monthly Payment:</strong> R{{ calculation.monthlyPayment }}</p>
+            <p><strong>Total Amount Repayable:</strong> R{{ calculation.totalAmount }}</p>
+            <p><strong>Interest Rate:</strong> {{ calculation.interestRate }}% per month</p>
+          </div>
+          <button
+            @click="handleButtonClick"
+            class="btn btn-primary w-100 mb-3"
+          >
+            {{ calculation ? 'Apply Now' : 'Calculate' }}
+          </button>
+     
       </div>
     </section>
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
-import api from '../services/api'
+import { useRouter } from 'vue-router'
 
-export default {
-  name: 'Home',
-  setup() {
-    const loanAmount = ref('')
-    const loanTerm = ref('')
-    const calculation = ref(null)
-    
-    const calculateLoan = async () => {
-      try {
-        const response = await api.post('api/loans/calculate', {
-          amount: parseFloat(loanAmount.value),
-          term: parseInt(loanTerm.value)
-        })
-        calculation.value = response.data
-      } catch (error) {
-        console.error('Calculation failed:', error)
-      }
-    }
-    
-    return {
-      loanAmount,
-      loanTerm,
-      calculation,
-      calculateLoan
-    }
+const router = useRouter()
+
+const loanAmount = ref('')
+const loanDuration = ref('')
+const calculation = ref(null)
+
+const calculateLoan = () => {
+  const amount = parseFloat(loanAmount.value)
+  const duration = parseInt(loanDuration.value, 10)
+
+  if (isNaN(amount) || amount <= 0 || isNaN(duration) || duration <= 0) {
+    alert('Please enter valid loan amount and duration (in months).')
+    return
+  }
+
+  // 5% monthly interest
+  const monthlyInterest = 0.05
+  const interest = amount * monthlyInterest * duration
+
+  // Initiation fee: R165 + 10% of amount over R1,000
+  const initiationFee = 165 + (amount > 1000 ? 0.1 * (amount - 1000) : 0)
+
+  // Monthly service fee: R60 per month
+  const monthlyServiceFee = 60 * duration
+
+  // Total repayment
+  const totalRepayment = amount + interest + initiationFee + monthlyServiceFee
+
+  // Approximate monthly payment
+  const monthlyPayment = totalRepayment / duration
+
+  calculation.value = {
+    monthlyPayment: monthlyPayment.toFixed(2),
+    totalAmount: totalRepayment.toFixed(2),
+    interestRate: (monthlyInterest * 100).toFixed(2)
+  }
+}
+
+const handleButtonClick = () => {
+  if (!calculation.value) {
+    calculateLoan()
+  } else {
+    router.push('/login')
   }
 }
 </script>

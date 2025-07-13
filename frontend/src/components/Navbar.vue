@@ -4,12 +4,10 @@
       <router-link to="/" class="navbar-brand">
         Restore Loans
       </router-link>
-
       <button class="navbar-toggler" @click="menuOpen = !menuOpen">
         ☰
       </button>
-
-      <ul :class="['navbar-nav', { open: menuOpen }]">
+      <ul class="navbar-nav">
         <li><router-link to="/" @click="closeMenu">Home</router-link></li>
         <li><router-link to="/about" @click="closeMenu">About</router-link></li>
         <li v-if="!isAuthenticated">
@@ -48,7 +46,7 @@ const handleLogout = () => {
 }
 
 const closeMenu = () => {
-  menuOpen.value = false
+  menuOpen.value = true
 }
 </script>
 
