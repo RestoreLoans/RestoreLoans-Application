@@ -4,13 +4,20 @@
       <router-link to="/" class="navbar-brand">
         Restore Loans
       </router-link>
-      <button class="navbar-toggler" @click="menuOpen = !menuOpen">
+
+      <button
+        class="navbar-toggler"
+        @click="menuOpen = !menuOpen"
+        :aria-expanded="menuOpen"
+        aria-label="Toggle navigation"
+      >
         ☰
       </button>
-      <ul class="navbar-nav">
+
+      <ul :class="['navbar-nav', { 'open': menuOpen }]">
         <li><router-link to="/" @click="closeMenu">Home</router-link></li>
         <li><router-link to="/about" @click="closeMenu">About</router-link></li>
-        <li><router-link to="/company" @click="closeMenu">company</router-link></li>
+        <li><router-link to="/company" @click="closeMenu">Company</router-link></li>
         <li v-if="!isAuthenticated">
           <router-link to="/login" @click="closeMenu">Login</router-link>
         </li>
@@ -27,6 +34,7 @@
     </div>
   </nav>
 </template>
+
 
 <script setup>
 import { ref, computed } from 'vue'
@@ -47,7 +55,6 @@ const handleLogout = () => {
 }
 
 const closeMenu = () => {
-  menuOpen.value = true
+  menuOpen.value = false
 }
 </script>
-
