@@ -52,6 +52,7 @@ import { useAuthStore } from '../stores/auth'
 import '../views/css/login.css'
 import axios from 'axios'
 
+const VITE_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 const router = useRouter()
 const authStore = useAuthStore()
 
@@ -68,7 +69,7 @@ const handleLogin = async () => {
   error.value = ''
 
   try {
-    await axios.post('http://127.0.0.1:8000/auth/login', {
+    await axios.post('/auth/login', {
       username: form.value.email,
       password: form.value.password
     })
