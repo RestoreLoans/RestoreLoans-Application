@@ -68,15 +68,15 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
+import axios from 'axios' // Make sure to import this!
 import '../views/css/reg.css'
 
 const router = useRouter()
-const authStore = useAuthStore()
 
 const loading = ref(false)
 const error = ref('')
 
+// Form state in camelCase (for Vue inputs)
 const form = ref({
   firstName: '',
   lastName: '',
@@ -98,13 +98,25 @@ const handleRegister = async () => {
 
   loading.value = true
   try {
-    await authStore.register(form.value)
-    router.push('/dashboard')
+    // Convert camelCase to snake_case
+    const payload = {
+      first_name: form.value.firstName,
+      last_name: form.value.lastName,
+      email: form.value.email,
+      password: form.value.password,
+      confirm_password: form.value.confirmPassword,
+      id_number: form.value.idNumber,
+      phone_number: form.value.phoneNumber,
+      gender: form.value.gender
+    }
+
+    await axios.post('http://127.0.0.1:8000/auth/register', payload)
+    router.push('/login')
   } catch (err) {
-    error.value = err.response?.data?.error || 'Registration failed'
+    console.error(err)
+    error.value = err.response?.data?.detail || 'Registration failed'
   } finally {
     loading.value = false
   }
 }
 </script>
-

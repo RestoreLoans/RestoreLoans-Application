@@ -50,6 +50,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import '../views/css/login.css'
+import axios from 'axios'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -63,13 +64,23 @@ const form = ref({
 })
 
 const handleLogin = async () => {
-  error.value = ''
   loading.value = true
+  error.value = ''
+
   try {
-    await authStore.login(form.value)
+    await axios.post('http://127.0.0.1:8000/auth/login', {
+      username: form.value.email,
+      password: form.value.password
+    })
     router.push('/dashboard')
   } catch (err) {
-    error.value = err.response?.data?.error || 'Login failed'
+    if (err.response?.data?.detail) {
+      error.value = err.response.data.detail
+    } else if (err.response?.data) {
+      error.value = JSON.stringify(err.response.data)
+    } else {
+      error.value = 'Login failed. Please check your credentials.'
+    }
   } finally {
     loading.value = false
   }
