@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
           port: ${{ secrets.SFTP_PORT }} # Optional — defaults to 22
-          local-dir: frontend/build/
+          local-dir: frontend/dist/
           remote-dir: /public_html/
           delete-remote: true
           state-name: .ftp-deploy-state.json
