@@ -6,10 +6,16 @@ on:
   push:
     branches:
       - main # This workflow will run whenever you push to the 'main' branch
+  paths:
+      - 'frontend/**'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest # Use the latest Ubuntu runner provided by GitHub Actions
+    defaults:
+      run:
+        working-directory: frontend
+
 
     steps:
       - name: Checkout code
