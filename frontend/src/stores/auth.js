@@ -4,7 +4,7 @@ import api from '../services/api';
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
-    token: localStorage.getItem('token') || '',
+    token: localStorage.getItem('token1') || '',
   }),
 
   actions: {
