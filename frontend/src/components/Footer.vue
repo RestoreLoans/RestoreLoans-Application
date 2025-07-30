@@ -10,8 +10,8 @@
 
         <div class="footer-contact">
         <p>Email: info@restoreloans.com</p>
-        <p>Phone: 555-555-5555</p>
-        <p>Address: 123 Main St, Anytown, USA</p>
+        <p>Phone: +27747776140</p>
+        <p>Address: 62 Beacon Road, Florida North 1709</p>
       </div>
     </div>
 
