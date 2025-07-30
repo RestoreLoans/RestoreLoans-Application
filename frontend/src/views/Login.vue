@@ -50,11 +50,11 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import '../views/css/login.css'
-import axios from 'axios'
 
-const VITE_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+
+
 const router = useRouter()
-const authStore = useAuthStore()
+const auth = useAuthStore()
 
 const loading = ref(false)
 const error = ref('')
@@ -67,12 +67,22 @@ const form = ref({
 const handleLogin = async () => {
   loading.value = true
   error.value = ''
+    const payload = {
+       username: form.value.email,
+      password: form.value.password,
+
+    }
+      const data = new URLSearchParams();
+  data.append('grant_type', 'password');
+  data.append('username', form.value.email);
+  data.append('password', form.value.password);
+  data.append('scope', '');
+  data.append('client_id', 'string');
+  data.append('client_secret', 'string');
 
   try {
-    await axios.post('/auth/login', {
-      username: form.value.email,
-      password: form.value.password
-    })
+    await auth.login(data)
+    console.log('Login successful')
     router.push('/dashboard')
   } catch (err) {
     if (err.response?.data?.detail) {

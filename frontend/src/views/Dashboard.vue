@@ -62,7 +62,7 @@ export default {
     const loans = ref([])
     const payments = ref([])
     
-    const userName = computed(() => authStore.userName)
+    const userName ='efq' //computed(() => authStore.userName)
     
     const totalOutstanding = computed(() => {
       return loans.value.reduce((sum, loan) => sum + loan.balance, 0).toFixed(2)
@@ -76,7 +76,7 @@ export default {
       return payments.value.reduce((sum, payment) => sum + payment.amount, 0).toFixed(2)
     })
     
-    const fetchLoans = async () => {
+  /*  const fetchLoans = async () => {
       try {
         const response = await api.get('/api/loans')
         loans.value = response.data
@@ -92,16 +92,16 @@ export default {
       } catch (error) {
         console.error('Error fetching payments:', error)
       }
-    }
+    }*/
     
     const viewStatements = () => {
       alert('Statement viewing feature coming soon!')
     }
     
     onMounted(async () => {
-      await authStore.fetchProfile()
-      await fetchLoans()
-      await fetchPayments()
+     // await authStore.fetchProfile()
+     // await fetchLoans()
+     // await fetchPayments()
     })
     
     return {

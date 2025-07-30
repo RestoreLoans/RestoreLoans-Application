@@ -68,11 +68,14 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios' // Make sure to import this!
+ 
 import '../views/css/reg.css'
+import api from '../services/api'
+import { useAuthStore } from '../stores/auth'; // adjust path if needed
+
 
 const router = useRouter()
-
+  const auth = useAuthStore();
 const loading = ref(false)
 const error = ref('')
 
@@ -86,9 +89,11 @@ const form = ref({
   idNumber: '',
   phoneNumber: '',
   gender: ''
+
 })
 
 const handleRegister = async () => {
+
   error.value = ''
 
   if (form.value.password !== form.value.confirmPassword) {
@@ -107,16 +112,17 @@ const handleRegister = async () => {
       confirm_password: form.value.confirmPassword,
       id_number: form.value.idNumber,
       phone_number: form.value.phoneNumber,
-      gender: form.value.gender
+      gender: form.value.gender,
+      is_active: true
     }
 
-    await axios.post('http://127.0.0.1:8000/auth/register', payload)
+    await auth.register( payload)
     router.push('/login')
   } catch (err) {
     console.error(err)
     error.value = err.response?.data?.detail || 'Registration failed'
   } finally {
-    loading.value = false
+    loading.value = false 
   }
 }
 </script>
