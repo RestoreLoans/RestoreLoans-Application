@@ -28,6 +28,9 @@
           <router-link to="/dashboard" @click="closeMenu">Dashboard</router-link>
         </li>
         <li v-if="isAuthenticated">
+          <router-link to="/historyview" @click="closeMenu">History</router-link>
+        </li>
+        <li v-if="isAuthenticated">
           <button @click="handleLogout" class="btn btn-secondary">Logout</button>
         </li>
       </ul>
