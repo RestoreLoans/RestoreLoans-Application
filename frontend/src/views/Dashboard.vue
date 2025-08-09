@@ -51,9 +51,11 @@
 </template>
 
 <script>
+
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import api from '../services/api'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Dashboard',
@@ -94,8 +96,10 @@ export default {
       }
     }*/
     
+    const router = useRouter()
+
     const viewStatements = () => {
-      alert('Statement viewing feature coming soon!')
+      router.push('/historyview')
     }
     
     onMounted(async () => {
