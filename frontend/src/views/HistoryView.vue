@@ -45,7 +45,8 @@
                   class="btn btn-success btn-sm"
                   target="_blank"
                   rel="noopener noreferrer"
-                  download
+                  :download="`statement-${item.id}.pdf`"
+                  v-if="item.file_path && item.file_path.endsWith('.pdf')"
                 >
                   Download
                 </a>
@@ -65,7 +66,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL + '/history/'
+const API_URL = import.meta.env.VITE_API_URL + 'history/'
 
 const history = ref([])
 const filters = ref({
