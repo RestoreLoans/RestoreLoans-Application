@@ -7,7 +7,7 @@
     
     <div class="dashboard-grid">
       <div class="stat-card">
-        <div class="stat-number">${{ totalOutstanding }}</div>
+        <div class="stat-number">R{{ totalOutstanding }}</div>
         <div>Total Outstanding</div>
       </div>
       <div class="stat-card">
@@ -15,7 +15,7 @@
         <div>Active Loans</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number">${{ totalPaid }}</div>
+        <div class="stat-number">R{{ totalPaid }}</div>
         <div>Total Paid</div>
       </div>
     </div>
@@ -29,9 +29,9 @@
         <router-link to="/payments" class="action-btn btn btn-secondary">
           Make Payment
         </router-link>
-        <button @click="viewStatements" class="action-btn btn btn-secondary">
+        <router-link to="/historyview" class="action-btn btn btn-secondary">
           View Statements
-        </button>
+        </router-link>
       </div>
     </div>
     
@@ -51,9 +51,11 @@
 </template>
 
 <script>
+
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import api from '../services/api'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Dashboard',
@@ -62,7 +64,7 @@ export default {
     const loans = ref([])
     const payments = ref([])
     
-    const userName ='efq' //computed(() => authStore.userName)
+    const userName ='Samkelo Ngubo' //computed(() => authStore.userName)
     
     const totalOutstanding = computed(() => {
       return loans.value.reduce((sum, loan) => sum + loan.balance, 0).toFixed(2)
@@ -94,8 +96,10 @@ export default {
       }
     }*/
     
+    const router = useRouter()
+
     const viewStatements = () => {
-      alert('Statement viewing feature coming soon!')
+      router.push('/historyview')
     }
     
     onMounted(async () => {

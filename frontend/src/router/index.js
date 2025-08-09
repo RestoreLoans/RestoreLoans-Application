@@ -7,6 +7,8 @@ const routes = [
   { path: '/register', name: 'Register', component: () => import('../views/Register.vue') },
   { path: '/dashboard', name: 'Dashboard', component: () => import('../views/Dashboard.vue'), meta: { requiresAuth: false } },
   { path: '/loans/apply', name: 'LoanApplication', component: () => import('../views/LoanApplication.vue'), meta: { requiresAuth: true } },
+  { path: '/company', name: 'Company', component: () => import('../views/company.vue') },
+  { path:'/historyview', name: 'HistoryView', component: () => import('../views/HistoryView.vue') },  
   { path: '/payments', name: 'Payments', component: () => import('../views/Payments.vue'), meta: { requiresAuth: true } },
   { path: '/about', name: 'About', component: () => import('../views/About.vue') }
 ]

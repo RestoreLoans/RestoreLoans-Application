@@ -62,7 +62,7 @@ const form = ref({
 })
 const isEditing = ref(false)
 const editingId = ref(null)
-const apiBase = VITE_API_URL + '/companies/'
+const apiBase = import.meta.env.VITE_API_URL + 'companies/'
 
 const fetchCompanies = async () => {
   try {
