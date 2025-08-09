@@ -29,7 +29,7 @@
         <router-link to="/payments" class="action-btn btn btn-secondary">
           Make Payment
         </router-link>
-        <router-link to="/historyview" class="action-btn btn btn-secondary">
+        <router-link to="/historyview" class="action-btn btn btn-primary">
           View Statements
         </router-link>
       </div>
