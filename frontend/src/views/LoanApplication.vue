@@ -46,6 +46,7 @@
         <!-- Loan Calculation Result -->
         <div v-if="calculation" class="card bg-light p-3 mb-4">
           <h4 class="mb-3">Loan Calculation</h4>
+     
           <p><strong>Monthly Payment:</strong> ${{ calculation.monthlyPayment }}</p>
           <p><strong>Total Amount Payable:</strong> ${{ calculation.totalAmount }}</p>
           <p><strong>Interest Rate:</strong> {{ calculation.interestRate }}% per annum</p>
@@ -115,7 +116,12 @@ const form = ref({
 
 const calculateLoan = async () => {
   error.value = ''
-  calculation.value = null
+calculation.value = {
+  monthlyPayment: 0,
+  value: 0,
+  totalAmount: 0,
+  interestRate: 0,
+};
 
   if (!form.value.amount || !form.value.term || form.value.amount < 1000) {
     error.value = 'Please enter a valid loan amount and term.'
@@ -123,11 +129,12 @@ const calculateLoan = async () => {
   }
 
   try {
-    const response = await api.post('loans/calculate', {
-      amount: form.value.amount,
-      term: form.value.term
-    })
-    calculation.value = response.data
+    console.log("767");
+    
+ 
+
+       calculation.monthlyPayment = 500;
+       console.log
   } catch (err) {
     error.value = err.response?.data?.error || 'Calculation failed. Please try again.'
     console.error('Calculation failed:', err)

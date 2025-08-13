@@ -62,7 +62,7 @@ export default {
     const loans = ref([])
     const payments = ref([])
     
-    const userName ='efq' //computed(() => authStore.userName)
+    const userName =computed(() => authStore.user.first_name+ " " + authStore.user.last_name  )
     
     const totalOutstanding = computed(() => {
       return loans.value.reduce((sum, loan) => sum + loan.balance, 0).toFixed(2)

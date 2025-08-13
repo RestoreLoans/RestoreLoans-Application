@@ -67,11 +67,7 @@ const form = ref({
 const handleLogin = async () => {
   loading.value = true
   error.value = ''
-    const payload = {
-       username: form.value.email,
-      password: form.value.password,
 
-    }
       const data = new URLSearchParams();
   data.append('grant_type', 'password');
   data.append('username', form.value.email);
@@ -81,7 +77,7 @@ const handleLogin = async () => {
   data.append('client_secret', 'string');
 
   try {
-    await auth.login(data)
+  await auth.login(data)
     console.log('Login successful')
     router.push('/dashboard')
   } catch (err) {
