@@ -54,7 +54,7 @@
 
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
-import api from '../services/api'
+
 import { useRouter } from 'vue-router'
 
 export default {

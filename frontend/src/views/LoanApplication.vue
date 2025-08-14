@@ -47,8 +47,8 @@
         <div v-if="calculation" class="card bg-light p-3 mb-4">
           <h4 class="mb-3">Loan Calculation</h4>
      
-          <p><strong>Monthly Payment:</strong> ${{ calculation.monthlyPayment }}</p>
-          <p><strong>Total Amount Payable:</strong> ${{ calculation.totalAmount }}</p>
+          <p><strong>Monthly Payment:</strong> R{{ calculation.monthlyPayment }}</p>
+          <p><strong>Total Amount Payable:</strong> R{{ calculation.totalAmount }}</p>
           <p><strong>Interest Rate:</strong> {{ calculation.interestRate }}% per annum</p>
         </div>
 
@@ -100,7 +100,13 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import api from '../services/api'
+
+import { useAuthStore } from '../stores/auth'
+import { useDashboardAuthStore } from '../stores/dashboard'
+
+
+const authStore = useAuthStore()
+const dashboardStore = useDashboardAuthStore()
 
 const router = useRouter()
 const loading = ref(false)
@@ -124,21 +130,32 @@ calculation.value = {
 };
 
   if (!form.value.amount || !form.value.term || form.value.amount < 1000) {
-    error.value = 'Please enter a valid loan amount and term.'
+    error.value = 'Please enter a valid loan amount and term'
     return
   }
 
   try {
-    console.log("767");
+  const P = form.value.amount;
     
- 
-
-       calculation.monthlyPayment = 500;
-       console.log
+   const monthlyRate = (27 / 100) / 12;
+     const n = form.value.term ;
+  if (monthlyRate === 0) {
+    return P / n;
+  }
+  const  month=P * (monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
+       calculation.value.monthlyPayment = month.toFixed(2) ;
+              calculation.value.interestRate = 27 ;
+             calculation.value.totalAmount = (month +  form.value.amount).toFixed(2);
+   
   } catch (err) {
     error.value = err.response?.data?.error || 'Calculation failed. Please try again.'
     console.error('Calculation failed:', err)
   }
+}
+function getEndOfMonthPlusMonths(offset) {
+  const date = new Date();
+  date.setMonth(date.getMonth() + offset + 1, 0); // day 0 means last day of previous month
+  return date.toISOString().split('T')[0];
 }
 
 const handleSubmit = async () => {
@@ -156,15 +173,24 @@ const handleSubmit = async () => {
 
   loading.value = true
   try {
-    await api.post('loans/apply', {
-      loanType: form.value.loanType,
-      amount: form.value.amount,
-      term: form.value.term
-    })
+
+const loanData = {
+  loan_type: 'home',
+  loan_amount: form.value.amount,
+  interest_rate: 27,
+  loan_term: form.value.term,
+  monthly_installment: calculation.value.monthlyPayment,
+  start_date: getEndOfMonthPlusMonths(0),
+  end_date: getEndOfMonthPlusMonths(form.value.term),
+  user_id: authStore.user.id
+}
+
+      await dashboardStore.loan(loanData);
+ 
     alert('Loan application submitted successfully!')
-    router.push('dashboard')
+    router.push('/dashboard')
   } catch (err) {
-    error.value = err.response?.data?.error || 'Application failed. Please try again.'
+    error.value = err.response?.data?.error || 'Application failed. Please try again11.' + err
   } finally {
     loading.value = false
   }

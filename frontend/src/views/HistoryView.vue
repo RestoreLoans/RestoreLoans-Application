@@ -25,20 +25,32 @@
       <div class="table-responsive">
         <table class="table table-bordered mt-3 align-middle">
           <thead class="table-light">
-            <tr>
-              <th>ID</th>
-              <th>User ID</th>
-              <th>Loan ID</th>
-              <th>Type</th>
-              <th>Download</th>
-            </tr>
+              <tr class="bg-gray-200">
+      <th class="text-center border border-gray-300 px-2 py-1">ID</th>
+      <th class="text-center border border-gray-300 px-2 py-1">User ID</th>
+      <th class="text-center border border-gray-300 px-2 py-1">Loan Type</th>
+      <th class="text-center border border-gray-300 px-2 py-1">Status</th>
+      <th class="text-center border border-gray-300 px-2 py-1">Loan Amount</th>
+      <th class="text-center border border-gray-300 px-2 py-1">Interest Rate</th>
+      <th class="text-center border border-gray-300 px-2 py-1">Monthly Installment</th>
+      <th class="text-center border border-gray-300 px-2 py-1">Start Date</th>
+      <th class="text-center border border-gray-300 px-2 py-1">End Date</th>
+      <th class="text-center border border-gray-300 px-2 py-1">Created At</th>
+    </tr>
           </thead>
           <tbody>
             <tr v-for="item in history" :key="item.id">
-              <td class="text-center">{{ item.id }}</td>
-              <td class="text-center">{{ item.user_id }}</td>
-              <td class="text-center">{{ item.loan_id }}</td>
-              <td class="text-center">{{ item.statement_type }}</td>
+           <td class="text-center">{{ item.id }}</td>
+  <td class="text-center">{{ item.user_id }}</td>
+  <td class="text-center">{{ item.loan_type }}</td>
+  <td class="text-center">{{ item.status }}</td>
+  <td class="text-center">{{ item.loan_amount }}</td>
+  <td class="text-center">{{ item.interest_rate }}%</td>
+  <td class="text-center">{{ item.monthly_installment }}</td>
+    <td class="text-center">{{ item.start_date }}</td>
+
+
+      <td class="text-center">{{ item.end_date }}</td>
               <td class="text-center">
                 <a
                   :href="item.file_path"
@@ -65,30 +77,34 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useAuthStore } from '../stores/auth'
+import { useDashboardAuthStore } from '../stores/dashboard'
 
-const API_URL = import.meta.env.VITE_API_URL + 'history/'
+
+const authStore = useAuthStore()
+const dashboardStore = useDashboardAuthStore()
+
+const loandata = ref([])
 
 const history = ref([])
 const filters = ref({
   user_id: '',
   loan_id: ''
 })
-
-const fetchHistory = async () => {
+onMounted(() => {
   try {
-    const params = { ...filters.value }
-    Object.keys(params).forEach(key => {
-      if (!params[key]) delete params[key]
-    })
+    console.log("logged in");
+ dashboardStore.getYourLoans()
+history.value = dashboardStore.loans;
 
-    const query = new URLSearchParams(params).toString()
-    const url = query ? `${API_URL}?${query}` : API_URL
-
-    const response = await axios.get(url)
-    history.value = Array.isArray(response.data) ? response.data : response.data.data || []
+  
   } catch (error) {
     console.error('Failed to fetch history:', error)
   }
+})
+
+const fetchHistory = async () => {
+
 }
 
 onMounted(fetchHistory)

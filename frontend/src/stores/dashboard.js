@@ -4,9 +4,9 @@ import api from '../services/api';
 
 
 
-export const dashboardAuthStore = defineStore('dashboard', {
+export const useDashboardAuthStore = defineStore('dashboard', {
   state: () => ({
-  
+     loans: []
 
   }),
    getters: {
@@ -18,14 +18,12 @@ export const dashboardAuthStore = defineStore('dashboard', {
   
 
     async loan(credentials) {
-      const res = await api.post('auth/login', credentials,
-      );
-       
-         
-      this.token = res.data.access_token;
-         this.user = res.data.user;
-      localStorage.setItem('token', this.token);
-            localStorage.setItem('user', JSON.stringify(this.user));
+    await api.post('loans', credentials);
+    },
+     async getYourLoans() {
+      const res = await api.get('loans/');
+      console.log(res.data);
+      this.loans = res.data;
     },
 
 
