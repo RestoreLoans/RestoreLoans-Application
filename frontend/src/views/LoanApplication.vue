@@ -196,3 +196,9 @@ const loanData = {
   }
 }
 </script>
+<style scoped>
+.container {
+  max-width: 700px;
+  margin: auto;
+}
+</style>
