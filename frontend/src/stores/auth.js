@@ -6,7 +6,7 @@ import api from '../services/api';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: JSON.parse(localStorage.getItem('user')) || null, // load stored user,
+    user:JSON.parse(localStorage.getItem('user')) ||null, // load stored user,
     token: localStorage.getItem('token') || '',
 
   }),
@@ -27,13 +27,18 @@ export const useAuthStore = defineStore('auth', {
          
       this.token = res.data.access_token;
          this.user = res.data.user;
+         console.log(this.user);
       localStorage.setItem('token', this.token);
             localStorage.setItem('user', JSON.stringify(this.user));
     },
 
-    async getProfile() {
-      const res = await api.get('users/profile');
+    async getProfile(id) {
+      const res = await api.get('users/'+id);
       this.user = res.data;
+
+      
+     
+            localStorage.setItem('user', JSON.stringify(this.user));
     },
 
 

@@ -22,8 +22,12 @@
     
     <div class="card">
       <h2>Quick Actions</h2>
+      
+   <p v-if="isCompanyAdded == null">No company available</p>
+
       <div class="quick-actions">
-        <router-link to="/loans/apply" class="action-btn btn btn-primary">
+
+        <router-link   :to="isCompanyAdded == null ? null : '/loans/apply'" class="action-btn btn btn-primary">
           Apply for Loan
         </router-link>
         <router-link to="/payments" class="action-btn btn btn-secondary">
@@ -64,7 +68,7 @@ export default {
     const payments = ref([])
     
     const userName =computed(() => authStore.user.first_name+ " " + authStore.user.last_name  )
-    
+    const isCompanyAdded =computed(() => authStore.user.company_id  )
     const totalOutstanding = computed(() => {
       return loans.value.reduce((sum, loan) => sum + loan.balance, 0).toFixed(2)
     })
@@ -108,6 +112,7 @@ export default {
     })
     
     return {
+      isCompanyAdded,
       userName,
       loans,
       totalOutstanding,

@@ -68,13 +68,17 @@ const handleLogin = async () => {
   loading.value = true
   error.value = ''
 
-      const data = new URLSearchParams();
-  data.append('grant_type', 'password');
+   //   const data = new URLSearchParams();
+  /*data.append('grant_type', 'password');
   data.append('username', form.value.email);
   data.append('password', form.value.password);
   data.append('scope', '');
   data.append('client_id', 'string');
-  data.append('client_secret', 'string');
+  data.append('client_secret', 'string');*/
+ const  data = {
+    email: form.value.email,
+    password: form.value.password
+  }
 
   try {
   await auth.login(data)

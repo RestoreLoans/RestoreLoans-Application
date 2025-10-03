@@ -5,7 +5,7 @@
 
       <form @submit.prevent="handleSubmit">
         <!-- Loan Type -->
-        <div class="form-group mb-3">
+    <!--    <div class="form-group mb-3">
           <label>Loan Type</label>
           <select v-model="form.loanType" class="form-control" required>
             <option disabled value="">Select Loan Type</option>
@@ -14,7 +14,7 @@
             <option value="Auto">Auto Loan</option>
             <option value="Business">Business Loan</option>
           </select>
-        </div>
+        </div>-->
 
         <!-- Loan Amount -->
         <div class="form-group mb-3">
@@ -31,7 +31,7 @@
         </div>
 
         <!-- Loan Term -->
-        <div class="form-group mb-4">
+      <!---  <div class="form-group mb-4">
           <label>Loan Term (months)</label>
           <select v-model.number="form.term" class="form-control" required>
             <option disabled value="">Select Term</option>
@@ -41,7 +41,7 @@
             <option value="48">48 months</option>
             <option value="60">60 months</option>
           </select>
-        </div>
+        </div>-->
 
         <!-- Loan Calculation Result -->
         <div v-if="calculation" class="card bg-light p-3 mb-4">
@@ -51,6 +51,24 @@
           <p><strong>Total Amount Payable:</strong> R{{ calculation.totalAmount }}</p>
           <p><strong>Interest Rate:</strong> {{ calculation.interestRate }}% per annum</p>
         </div>
+
+    <!-- Bank Statement -->
+    <div>
+      <label class="block font-semibold mb-1">Bank Statement</label>
+      <input type="file" @change="e => handleFileUpload(e, 'bankStatement')" />
+    </div>
+
+    <!-- ID Copy -->
+    <div>
+      <label class="block font-semibold mb-1">ID Copy</label>
+      <input type="file" @change="e => handleFileUpload(e, 'idCopy')" />
+    </div>
+
+    <!-- Payslip -->
+    <div>
+      <label class="block font-semibold mb-1">Payslip</label>
+      <input type="file" @change="e => handleFileUpload(e, 'payslip')" />
+    </div>
 
         <!-- Calculate Button -->
         <div class="d-grid gap-2 mb-3">
@@ -72,10 +90,12 @@
             class="form-check-input"
             required
           >
+
           <label class="form-check-label" for="agreeTerms">
             I agree to the terms and conditions
           </label>
         </div>
+
 
         <!-- Error Alert -->
         <div v-if="error" class="alert alert-danger mb-3">
@@ -98,7 +118,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref,computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '../stores/auth'
@@ -112,13 +132,21 @@ const router = useRouter()
 const loading = ref(false)
 const calculation = ref(null)
 const error = ref('')
-
+const files = ref({
+  bankStatement: null,
+  idCopy: null,
+  payslip: null,
+})
 const form = ref({
   loanType: '',
   amount: '',
-  term: '',
+  term: '1',
   agreeTerms: false
 })
+const uploadStatus = ref("")
+const allFilesSelected = computed(() =>
+  files.value.bankStatement && files.value.idCopy && files.value.payslip
+)
 
 const calculateLoan = async () => {
   error.value = ''
@@ -137,15 +165,15 @@ calculation.value = {
   try {
   const P = form.value.amount;
     
-   const monthlyRate = (27 / 100) / 12;
+   const monthlyRate = 0.10;
      const n = form.value.term ;
   if (monthlyRate === 0) {
     return P / n;
   }
   const  month=P * (monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
        calculation.value.monthlyPayment = month.toFixed(2) ;
-              calculation.value.interestRate = 27 ;
-             calculation.value.totalAmount = (month +  form.value.amount).toFixed(2);
+              calculation.value.interestRate = 10 ;
+             calculation.value.totalAmount = (month ).toFixed(2);
    
   } catch (err) {
     error.value = err.response?.data?.error || 'Calculation failed. Please try again.'
@@ -157,7 +185,9 @@ function getEndOfMonthPlusMonths(offset) {
   date.setMonth(date.getMonth() + offset + 1, 0); // day 0 means last day of previous month
   return date.toISOString().split('T')[0];
 }
-
+function handleFileUpload(event, type) {
+  files.value[type] = event.target.files[0]
+}
 const handleSubmit = async () => {
   error.value = ''
 
@@ -185,7 +215,28 @@ const loanData = {
   user_id: authStore.user.id
 }
 
-      await dashboardStore.loan(loanData);
+    const formData = new FormData();
+    formData.append("monthly_installment", calculation.value.monthlyPayment);
+    formData.append("loan_amount", form.value.amount);
+    formData.append("loan_type", "home");
+    formData.append("start_date", getEndOfMonthPlusMonths(0));
+    formData.append("end_date", getEndOfMonthPlusMonths(form.value.term));
+    formData.append("interest_rate", 10);
+    formData.append("loan_term", 1);
+    formData.append("user_id", authStore.user.id);
+
+    // File inputs – example with <input type="file">
+   
+      formData.append("bank_statement", files.value.bankStatement);
+   
+
+      formData.append("proof_of_residence", files.value.payslip);
+   
+
+      formData.append("id_document", files.value.idCopy);
+
+
+      await dashboardStore.loan(formData);
  
     alert('Loan application submitted successfully!')
     router.push('/dashboard')

@@ -3,7 +3,7 @@
     <h2 class="text-center mb-4">Company Management</h2>
 
     <!-- Create / Edit Form -->
-    <div class="card p-4 mb-4">
+    <div class="card p-4 pmb-4" v-if="!companyInformation" >
       <h4>{{ isEditing ? 'Edit Company' : 'Add New Company' }}</h4>
       <form @submit.prevent="isEditing ? updateCompany() : addCompany()">
         <div class="form-group mb-2">
@@ -29,30 +29,69 @@
     </div>
 
     <!-- Company List -->
+
     <div class="card p-4">
-      <h4>Company List</h4>
-      <div v-if="companies.length === 0">No companies available.</div>
-      <ul class="list-group">
-        <li v-for="company in companies" :key="company.id" class="list-group-item d-flex justify-content-between align-items-center">
-          <div>
-            <strong>{{ company.name }}</strong><br />
-            {{ company.address }}<br />
-            {{ company.email }} | {{ company.phone }}
-          </div>
+      <h4>Company data</h4>
+      <div v-if="!companyInformation">No companies available.</div>
+       <table class="company-table" v-if="companyInformation">
+      <tr>
+        <th>Name</th>
+        <td>{{ companyInformation.name }}</td>
+      </tr>
+      <tr>
+        <th>Address</th>
+        <td>{{ companyInformation.address }}</td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td>{{ companyInformation.email }}</td>
+      </tr>
+      <tr>
+        <th>Phone</th>
+        <td>{{ companyInformation.phone }}</td>
+      </tr>
+      <tr>
+        <th>User ID</th>
+        <td>{{ companyInformation.user_id ?? 'N/A' }}</td>
+      </tr>
+      <tr>
+        <th>ID</th>
+        <td>{{ companyInformation.id }}</td>
+      </tr>
+      <tr>
+        <th>Created At</th>
+        <td>{{ companyInformation.created_at }}</td>
+      </tr>
+      <tr>
+        <th>Updated At</th>
+        <td>{{ companyInformation.updated_at }}</td>
+      </tr>
+      <tr>
+    
+          <button class="btn btn-sm btn-danger space" @click="deleteCompany( companyInformation.id )">Delete</button>
+      </tr>
+    </table>
+             
+     <!-- <ul class="list-group">
+      
+         
           <div>
             <button class="btn btn-sm btn-warning me-2" @click="editCompany(company)">Edit</button>
             <button class="btn btn-sm btn-danger" @click="deleteCompany(company.id)">Delete</button>
           </div>
-        </li>
-      </ul>
+        
+      </ul>-->
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
-
+import { ref, onMounted ,computed} from 'vue'
+import { useCompanyStore } from '../stores/company'
+import { useAuthStore } from '../stores/auth'
+const authStore = useAuthStore()
+const companyStore = useCompanyStore()
+const companyInformation = ref(null);
 const companies = ref([])
 const form = ref({
   name: '',
@@ -62,12 +101,31 @@ const form = ref({
 })
 const isEditing = ref(false)
 const editingId = ref(null)
-const apiBase = import.meta.env.VITE_API_URL + 'companies/'
+onMounted(async() => {
+  try {
+    console.log("logged in");
+        computed(() => authStore.user.id  )
+        console.log("medupe");
+        console.log(authStore.user )
+
+     
+           await  companyStore.getCompanies(authStore.user.company_id )
+             companyInformation.value = companyStore.companyInformation;
+      
+       
+     
+
+
+
+  } catch (error) {
+    console.error('Failed to fetch history:', error)
+  }
+})
 
 const fetchCompanies = async () => {
   try {
-    const res = await axios.get(apiBase)
-    companies.value = res.data
+  //  const res = await axios.get(apiBase)
+   // companies.value = res.data
   } catch (err) {
     console.error('Error fetching companies', err)
   }
@@ -75,9 +133,24 @@ const fetchCompanies = async () => {
 
 const addCompany = async () => {
   try {
-    await axios.post(apiBase, form.value)
-    await fetchCompanies()
-    resetForm()
+
+    console.log("ANOTHERVALUE"+authStore.user.id);
+
+const loanData = {
+ name: form.value.name,
+  address: form.value.address,
+  email:  form.value.email,
+  phone:  form.value.phone,
+  user_id: authStore.user.id
+}
+   await  companyStore.addCompany(loanData);
+await  authStore.getProfile(authStore.user.id );
+await  companyStore.getCompanies(authStore.user.company_id )
+  companyInformation.value = companyStore.companyInformation;
+
+
+   // await fetchCompanies()
+   // resetForm()
   } catch (err) {
     console.error('Error adding company', err)
   }
@@ -91,7 +164,7 @@ const editCompany = (company) => {
 
 const updateCompany = async () => {
   try {
-    await axios.put(`${apiBase}${editingId.value}/`, form.value)
+ //   await axios.put(`${apiBase}${editingId.value}/`, form.value)
     await fetchCompanies()
     resetForm()
   } catch (err) {
@@ -102,8 +175,15 @@ const updateCompany = async () => {
 const deleteCompany = async (id) => {
   if (confirm('Are you sure you want to delete this company?')) {
     try {
-      await axios.delete(`${apiBase}${id}/`)
-      await fetchCompanies()
+       await  companyStore.deleteCompany(id);
+         await  authStore.getProfile(authStore.user.id );
+
+  companyInformation.value = null
+
+
+
+      // await fetchCompanies()
+
     } catch (err) {
       console.error('Error deleting company', err)
     }
@@ -123,5 +203,44 @@ onMounted(fetchCompanies)
 .container {
   max-width: 700px;
   margin: auto;
+}
+.table-container {
+  max-width: 100%;
+  overflow-x: auto; /* horizontal scroll if table is too wide */
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.company-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* ensures horizontal scroll if smaller viewport */
+}
+
+.company-table th,
+.company-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.company-table th {
+  background-color: #f0f0f0;
+  font-weight: 500;
+  color: #555;
+}
+
+.company-table tr:hover {
+  background-color: #f5f5f5;
+  transition: background-color 0.2s;
 }
 </style>

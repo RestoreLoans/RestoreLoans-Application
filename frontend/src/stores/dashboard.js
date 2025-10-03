@@ -20,8 +20,8 @@ export const useDashboardAuthStore = defineStore('dashboard', {
     async loan(credentials) {
     await api.post('loans', credentials);
     },
-     async getYourLoans() {
-      const res = await api.get('loans/');
+     async getYourLoans(id) {
+      const res = await api.get('loans/'+id);
       console.log(res.data);
       this.loans = res.data;
     },
