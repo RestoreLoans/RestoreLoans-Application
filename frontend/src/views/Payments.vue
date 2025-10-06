@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="margin-top: 30px; max-width: 700px;">
+  <div class="center-container">
     <div class="card p-4 shadow mb-5">
       <h2 class="mb-4 text-center">Make a Payment</h2>
       <form @submit.prevent="handlePayment">
@@ -213,5 +213,22 @@ onMounted(() => {
 .payment-status.failed {
   background: #f8d7da;
   color: #721c24;
+}
+</style>
+
+<style scoped>
+
+.center-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f5f6fa;
+  margin-top: 30px;
+  min-height: 100vh;
+}
+
+.center-container > .card {
+  width: 100%;
+  max-width: 700px;
 }
 </style>

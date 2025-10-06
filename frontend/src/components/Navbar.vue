@@ -18,6 +18,7 @@
         <li><router-link to="/" @click="closeMenu">Home</router-link></li>
         <li><router-link to="/about" @click="closeMenu">About</router-link></li>
         <li><router-link to="/company" @click="closeMenu">Company</router-link></li>
+        <li><router-link to="/bank" @click="closeMenu">Bank</router-link></li>
         <li v-if="!isAuthenticated">
           <router-link to="/login" @click="closeMenu">Login</router-link>
         </li>

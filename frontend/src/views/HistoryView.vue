@@ -75,8 +75,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted,computed } from 'vue'
-
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import { useAuthStore } from '../stores/auth'
 import { useDashboardAuthStore } from '../stores/dashboard'
 
@@ -94,8 +94,7 @@ const filters = ref({
 onMounted(() => {
   try {
     console.log("logged in");
-        const id =computed(() => authStore.user.id  )
- dashboardStore.getYourLoans(id)
+ dashboardStore.getYourLoans()
 history.value = dashboardStore.loans;
 
   
@@ -125,6 +124,7 @@ onMounted(fetchHistory)
 }
 
 .filter-input {
+  height: 25px;
   min-width: 200px;
   max-width: 250px;
 }
