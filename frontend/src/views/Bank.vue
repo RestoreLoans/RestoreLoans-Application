@@ -83,41 +83,57 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, onMounted ,computed} from 'vue'
+import { useBankStore } from '../stores/bank'
+import { useAuthStore } from '../stores/auth'
+const authStore = useAuthStore()
+const bankStore = useBankStore()
 
-const API_URL = VITE_API_URL + '/bank-details/'
+
+
 
 const bankDetails = ref([])
 const form = ref({
-  id: null,
+
   bank_name: '',
   branch_name: '',
   branch_code: '',
   account_holder_name: '',
   account_number: '',
   account_type: '',
-  user_id: 1  // Replace with actual user_id if needed
+  user_id:  authStore.user.id   // Replace with actual user_id if needed
 })
 const editMode = ref(false)
-
-const fetchBankDetails = async () => {
+const bankInformation = ref(null);
+onMounted(async() => {
   try {
-    const res = await axios.get(API_URL)
-    bankDetails.value = res.data
-  } catch (err) {
-    console.error('Fetch failed:', err)
+ 
+        computed(() => authStore.user.id  )
+        console.log("medupe");
+        console.log(authStore.user )
+
+     
+           await  bankStore.getBank(authStore.user.bank_id )
+             bankInformation.value = bankStore.bankInformation;
+
+  } catch (error) {
+    console.error('Failed to fetch history:', error)
   }
-}
+})
+
 
 const saveBankDetail = async () => {
   try {
-    if (editMode.value) {
-      await axios.put(`${API_URL}${form.value.id}/`, form.value)
-    } else {
-      await axios.post(API_URL, form.value)
-    }
-    await fetchBankDetails()
+
+      await bankStore.addBank( form.value)
+      await  authStore.getProfile(authStore.user.id );
+
+                 await  bankStore.getBank(authStore.user.bank_id )
+             bankInformation.value = bankStore.bankInformation;
+
+
+    
+ //   await fetchBankDetails()
     resetForm()
   } catch (err) {
     console.error('Save failed:', err)
@@ -158,7 +174,7 @@ const deleteBankDetail = async (id) => {
   }
 }
 
-onMounted(fetchBankDetails)
+
 </script>
 
 <style scoped>
