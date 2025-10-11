@@ -9,9 +9,6 @@
         <div class="col-12 col-md-4 mb-2 d-flex justify-content-center">
           <input v-model="filters.user_id" type="number" placeholder="User ID" class="form-control text-center filter-input" />
         </div>
-        <div class="col-12 col-md-4 mb-2 d-flex justify-content-center">
-          <input v-model="filters.loan_id" type="number" placeholder="Loan ID" class="form-control text-center filter-input" />
-        </div>
         <br/>
         <div class="col-12 col-md-4 mb-2 d-flex justify-content-center">
           <button @click="fetchHistory" class="btn btn-primary w-100 w-md-auto filter-btn">Search</button>
@@ -94,17 +91,41 @@ const filters = ref({
 onMounted(() => {
   try {
     console.log("logged in");
- dashboardStore.getYourLoans()
-history.value = dashboardStore.loans;
-
-  
+    // Only call getYourLoans with a valid user_id if needed
+    if (authStore.user && authStore.user.id) {
+      dashboardStore.getYourLoans(authStore.user.id)
+    } else {
+      dashboardStore.getYourLoans()
+    }
+    history.value = dashboardStore.loans;
   } catch (error) {
     console.error('Failed to fetch history:', error)
   }
 })
 
 const fetchHistory = async () => {
-
+  try {
+    let url = '';
+    if (filters.value.loan_id) {
+      url = `http://127.0.0.1:8000/loans/${filters.value.loan_id}`;
+    } else if (filters.value.user_id) {
+      url = `http://127.0.0.1:8000/loans?user_id=${filters.value.user_id}`;
+    } else {
+      url = 'http://127.0.0.1:8000/loans';
+    }
+    const response = await axios.get(url);
+    // If response is a single object, wrap in array for table
+    if (Array.isArray(response.data)) {
+      history.value = response.data;
+    } else if (response.data) {
+      history.value = [response.data];
+    } else {
+      history.value = [];
+    }
+  } catch (error) {
+    console.error('Failed to fetch history:', error);
+    history.value = [];
+  }
 }
 
 onMounted(fetchHistory)
