@@ -1,83 +1,98 @@
 <template>
-  <div class="container my-4">
-    <h2 class="mb-4">Bank Details Management</h2>
-
-    <!-- FORM -->
-    <div class="card mb-4 p-3">
-      <h5>{{ editMode ? 'Edit Bank Detail' : 'Add New Bank Detail' }}</h5>
-      <form @submit.prevent="saveBankDetail">
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label>Bank Name</label>
-            <input v-model="form.bank_name" class="form-control" required>
+  <div class="bank-container">
+    <div class="centered-content">
+      <h2 class="mb-4 text-center" alingn="center">Bank Details Management</h2>
+      <!-- FORM -->
+      <div class="card mb-4 p-4 form-card">
+        <h5 class="mb-3 text-center">{{ editMode ? 'Edit Bank Detail' : 'Add New Bank Detail' }}</h5>
+        <form @submit.prevent="saveBankDetail">
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle mb-0 form-table">
+              <tbody>
+                <tr>
+                  <th class="form-label" style="width: 30%">Bank Name</th>
+                  <td><input v-model="form.bank_name" class="form-control" required></td>
+                </tr>
+                <tr>
+                  <th class="form-label">Branch Name</th>
+                  <td><input v-model="form.branch_name" class="form-control" required></td>
+                </tr>
+                <tr>
+                  <th class="form-label">Branch Code</th>
+                  <td><input v-model="form.branch_code" class="form-control" required></td>
+                </tr>
+                <tr>
+                  <th class="form-label">Account Holder Name</th>
+                  <td><input v-model="form.account_holder_name" class="form-control" required></td>
+                </tr>
+                <tr>
+                  <th class="form-label">Account Number</th>
+                  <td><input v-model="form.account_number" class="form-control" required></td>
+                </tr>
+                <tr>
+                  <th class="form-label">Account Type</th>
+                  <td>
+                    <select v-model="form.account_type" class="form-control" required>
+                      <option value="">Select Type</option>
+                      <option value="savings">Savings</option>
+                      <option value="cheque">Cheque</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="text-center pt-3">
+                    <button type="submit" class="btn btn-primary px-4">
+                      {{ editMode ? 'Update' : 'Create' }}
+                    </button>
+                    <button v-if="editMode" @click="cancelEdit" type="button" class="btn btn-secondary ms-2 px-4">
+                      Cancel
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="col-md-6 mb-3">
-            <label>Branch Name</label>
-            <input v-model="form.branch_name" class="form-control" required>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label>Branch Code</label>
-            <input v-model="form.branch_code" class="form-control" required>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label>Account Holder Name</label>
-            <input v-model="form.account_holder_name" class="form-control" required>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label>Account Number</label>
-            <input v-model="form.account_number" class="form-control" required>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label>Account Type</label>
-            <select v-model="form.account_type" class="form-control" required>
-              <option value="">Select Type</option>
-              <option value="savings">Savings</option>
-              <option value="cheque">Cheque</option>
-            </select>
-          </div>
+        </form>
+      </div>
+      <!-- LIST -->
+      <div class="card p-4 list-card">
+        <h5 class="mb-3 text-center">All Bank Details</h5>
+        <div class="table-responsive">
+          <table class="table table-striped align-middle">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Bank Name</th>
+                <th>Branch</th>
+                <th>Account Holder</th>
+                <th>Account Number</th>
+                <th>Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in bankDetails" :key="item.id">
+                <td>{{ item.id }}</td>
+                <td>{{ item.bank_name }}</td>
+                <td>{{ item.branch_name }}</td>
+                <td>{{ item.account_holder_name }}</td>
+                <td>{{ item.account_number }}</td>
+                <td>{{ item.account_type }}</td>
+                <td>
+                  <button class="btn btn-sm btn-warning me-2" @click="editBankDetail(item)">Edit</button>
+                  <button class="btn btn-sm btn-danger" @click="deleteBankDetail(item.id)">Delete</button>
+                </td>
+              </tr>
+              <tr v-if="!bankDetails.length">
+                <td colspan="7" class="text-center">No records found.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <button type="submit" class="btn btn-primary">
-          {{ editMode ? 'Update' : 'Create' }}
-        </button>
-        <button v-if="editMode" @click="cancelEdit" type="button" class="btn btn-secondary ms-2">
-          Cancel
-        </button>
-      </form>
-    </div>
-
-    <!-- LIST -->
-    <div class="card p-3">
-      <h5 class="mb-3">All Bank Details</h5>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Bank Name</th>
-            <th>Branch</th>
-            <th>Account Holder</th>
-            <th>Account Number</th>
-            <th>Type</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in bankDetails" :key="item.id">
-            <td>{{ item.id }}</td>
-            <td>{{ item.bank_name }}</td>
-            <td>{{ item.branch_name }}</td>
-            <td>{{ item.account_holder_name }}</td>
-            <td>{{ item.account_number }}</td>
-            <td>{{ item.account_type }}</td>
-            <td>
-              <button class="btn btn-sm btn-warning me-2" @click="editBankDetail(item)">Edit</button>
-              <button class="btn btn-sm btn-danger" @click="deleteBankDetail(item.id)">Delete</button>
-            </td>
-          </tr>
-          <tr v-if="!bankDetails.length">
-            <td colspan="7" class="text-center">No records found.</td>
-          </tr>
-        </tbody>
-      </table>
+      </div>
     </div>
   </div>
 </template>
@@ -178,11 +193,60 @@ const deleteBankDetail = async (id) => {
 </script>
 
 <style scoped>
-.card {
-  border-radius: 8px;
+.bank-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #f5f6fa;
+  padding-top: 40px;
+}
+.centered-content {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.form-card, .list-card {
+  border-radius: 12px;
   background-color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  margin-bottom: 32px;
+}
+.form-label {
+  font-weight: 500;
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.form-table th, .form-table td {
+  vertical-align: middle;
+  border: 1px solid #e9ecef;
+}
+.form-table th {
+  width: 30%;
+  min-width: 120px;
+}
+.form-table input.form-control, .form-table select.form-control {
+  width: 100%;
+  min-width: 120px;
+}
+.form-control {
+  border-radius: 2px !important;
+  border: 1px solid #d1d5db;
+  height: 35px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  transition: border-color 0.2s;
+}
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.08);
+}
+select.form-control {
+  border-radius: 8px !important;
 }
 .btn {
-  min-width: 80px;
+  min-width: 100%;
+  align-items: center;
 }
 </style>
+
