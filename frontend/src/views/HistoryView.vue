@@ -47,16 +47,12 @@
               <td class="text-center">{{ item.start_date }}</td>
               <td class="text-center">{{ item.end_date }}</td>
               <td class="text-center">
-                <a
-                  :href="item.file_path"
+                <button
                   class="btn btn-success btn-sm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  :download="`statement-${item.id}.pdf`"
-                  v-if="item.file_path && item.file_path.endsWith('.pdf')"
+                  @click="downloadLoanPdf(item.id)"
                 >
-                  Download
-                </a>
+                  Download PDF
+                </button>
               </td>
             </tr>
             <tr v-if="!history.length">
@@ -79,7 +75,6 @@ import { useDashboardAuthStore } from '../stores/dashboard'
 const authStore = useAuthStore()
 const dashboardStore = useDashboardAuthStore()
 
-const loandata = ref([])
 
 const history = ref([])
 const filters = ref({
@@ -123,6 +118,29 @@ const fetchHistory = async () => {
   } catch (error) {
     console.error('Failed to fetch history:', error);
     history.value = [];
+  }
+}
+
+const downloadLoanPdf = async (loanId) => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/loans/${loanId}/pdf`, {
+      responseType: 'blob'
+    });
+    if (response.status === 200) {
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `loan-${loanId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } else {
+      alert('Failed to download PDF: Invalid response from server.');
+    }
+  } catch (error) {
+    alert('Failed to download PDF. Please try again later.');
+    console.error('Failed to download PDF:', error);
   }
 }
 
