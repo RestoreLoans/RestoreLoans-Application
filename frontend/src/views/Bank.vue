@@ -101,6 +101,7 @@
 import { ref, onMounted ,computed} from 'vue'
 import { useBankStore } from '../stores/bank'
 import { useAuthStore } from '../stores/auth'
+import { ElMessage } from 'element-plus'
 const authStore = useAuthStore()
 const bankStore = useBankStore()
 
@@ -130,7 +131,7 @@ onMounted(async() => {
      
            await  bankStore.getBank(authStore.user.bank_id )
              bankInformation.value = bankStore.bankInformation;
-
+   
   } catch (error) {
     console.error('Failed to fetch history:', error)
   }
@@ -142,14 +143,12 @@ const saveBankDetail = async () => {
 
       await bankStore.addBank( form.value)
       await  authStore.getProfile(authStore.user.id );
-
-                 await  bankStore.getBank(authStore.user.bank_id )
+      await  bankStore.getBank(authStore.user.bank_id )
              bankInformation.value = bankStore.bankInformation;
 
-
-    
- //   await fetchBankDetails()
-    resetForm()
+      await fetchBankDetails()
+      ElMessage.success('Bank detail saved successfully!')
+      resetForm()
   } catch (err) {
     console.error('Save failed:', err)
   }
@@ -166,7 +165,7 @@ const cancelEdit = () => {
 
 const resetForm = () => {
   form.value = {
-    id: null,
+    id: user.id,
     bank_name: '',
     branch_name: '',
     branch_code: '',
