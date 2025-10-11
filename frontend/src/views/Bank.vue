@@ -101,7 +101,6 @@
 import { ref, onMounted ,computed} from 'vue'
 import { useBankStore } from '../stores/bank'
 import { useAuthStore } from '../stores/auth'
-import { ElMessage } from 'element-plus'
 const authStore = useAuthStore()
 const bankStore = useBankStore()
 
