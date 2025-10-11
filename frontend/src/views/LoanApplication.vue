@@ -29,48 +29,7 @@
             placeholder="Enter amount"
           >
         </div>
-
-        <!-- Loan Term -->
-      <!---  <div class="form-group mb-4">
-          <label>Loan Term (months)</label>
-          <select v-model.number="form.term" class="form-control" required>
-            <option disabled value="">Select Term</option>
-            <option value="12">12 months</option>
-            <option value="24">24 months</option>
-            <option value="36">36 months</option>
-            <option value="48">48 months</option>
-            <option value="60">60 months</option>
-          </select>
-        </div>-->
-
-        <!-- Loan Calculation Result -->
-        <div v-if="calculation" class="card bg-light p-3 mb-4">
-          <h4 class="mb-3">Loan Calculation</h4>
-     
-          <p><strong>Monthly Payment:</strong> R{{ calculation.monthlyPayment }}</p>
-          <p><strong>Total Amount Payable:</strong> R{{ calculation.totalAmount }}</p>
-          <p><strong>Interest Rate:</strong> {{ calculation.interestRate }}% per annum</p>
-        </div>
-
-    <!-- Bank Statement -->
-    <div>
-      <label class="block font-semibold mb-1">Bank Statement</label>
-      <input type="file" @change="e => handleFileUpload(e, 'bankStatement')" />
-    </div>
-
-    <!-- ID Copy -->
-    <div>
-      <label class="block font-semibold mb-1">ID Copy</label>
-      <input type="file" @change="e => handleFileUpload(e, 'idCopy')" />
-    </div>
-
-    <!-- Payslip -->
-    <div>
-      <label class="block font-semibold mb-1">Payslip</label>
-      <input type="file" @change="e => handleFileUpload(e, 'payslip')" />
-    </div>
-
-        <!-- Calculate Button -->
+         <!-- Calculate Button -->
         <div class="d-grid gap-2 mb-3">
           <button
             type="button"
@@ -79,7 +38,46 @@
           >
             Calculate Loan
           </button>
+        </div><br>
+
+        <!-- Loan Calculation Result -->
+        <div v-if="calculation" class="card bg-light p-3 mb-4">
+          <h4 class="mb-3">Loan Calculation</h4>
+     
+          <p><strong>Monthly Payment:</strong> R{{ calculation.monthlyPayment }}</p>
+          <p><strong>Total Amount Payable:</strong> R{{ calculation.totalAmount }}</p>
+          <p><strong>Interest Rate:</strong> {{ calculation.interestRate }}% per month</p>
         </div>
+
+    <!-- Bank Statement -->
+    <table class="table table-bordered table-responsive mb-4">
+      <thead>
+        <tr>
+          <th>Document Type</th>
+          <th>Upload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bank Statement</td>
+          <td>
+            <input type="file" @change="e => handleFileUpload(e, 'bankStatement')" />
+          </td>
+        </tr>
+        <tr>
+          <td>ID Copy</td>
+          <td>
+            <input type="file" @change="e => handleFileUpload(e, 'idCopy')" />
+          </td>
+        </tr>
+        <tr>
+          <td>Payslip</td>
+          <td>
+            <input type="file" @change="e => handleFileUpload(e, 'payslip')" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
         <!-- Terms Agreement -->
         <div class="form-check mb-4">
@@ -100,7 +98,7 @@
         <!-- Error Alert -->
         <div v-if="error" class="alert alert-danger mb-3">
           {{ error }}
-        </div>
+        </div><br>
 
         <!-- Submit Button -->
         <div class="d-grid gap-2">

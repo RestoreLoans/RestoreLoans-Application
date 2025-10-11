@@ -33,7 +33,7 @@
         <router-link   :to="isCompanyAdded == null ? null : '/loans/apply'" class="action-btn btn btn-primary">
           Apply for Loan
         </router-link>
-        <router-link to="/payments" class="action-btn btn btn-secondary">
+        <router-link to="/payments" class="action-btn btn btn-primary">
           Make Payment
         </router-link>
         <router-link to="/historyview" class="action-btn btn btn-primary">

@@ -34,43 +34,44 @@
       <h4>Company data</h4>
       <div v-if="!companyInformation">No companies available.</div>
        <table class="company-table" v-if="companyInformation">
-      <tr>
-        <th>Name</th>
-        <td>{{ companyInformation.name }}</td>
-      </tr>
-      <tr>
-        <th>Address</th>
-        <td>{{ companyInformation.address }}</td>
-      </tr>
-      <tr>
-        <th>Email</th>
-        <td>{{ companyInformation.email }}</td>
-      </tr>
-      <tr>
-        <th>Phone</th>
-        <td>{{ companyInformation.phone }}</td>
-      </tr>
-      <tr>
-        <th>User ID</th>
-        <td>{{ companyInformation.user_id ?? 'N/A' }}</td>
-      </tr>
-      <tr>
-        <th>ID</th>
-        <td>{{ companyInformation.id }}</td>
-      </tr>
-      <tr>
-        <th>Created At</th>
-        <td>{{ companyInformation.created_at }}</td>
-      </tr>
-      <tr>
-        <th>Updated At</th>
-        <td>{{ companyInformation.updated_at }}</td>
-      </tr>
-      <tr>
-    
-          <button class="btn btn-sm btn-danger space" @click="deleteCompany( companyInformation.id )">Delete</button>
-      </tr>
-    </table>
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <td>{{ companyInformation.name }}</td>
+          </tr>
+          <tr>
+            <th>Address</th>
+            <td>{{ companyInformation.address }}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>{{ companyInformation.email }}</td>
+          </tr>
+          <tr>
+            <th>Phone</th>
+            <td>{{ companyInformation.phone }}</td>
+          </tr>
+          <tr>
+            <th>User ID</th>
+            <td>{{ companyInformation.user_id ?? 'N/A' }}</td>
+          </tr>
+          <tr>
+            <th>ID</th>
+            <td>{{ companyInformation.id }}</td>
+          </tr>
+          <tr>
+            <th>Created At</th>
+            <td>{{ companyInformation.created_at }}</td>
+          </tr>
+          <tr>
+            <th>Updated At</th>
+            <td>{{ companyInformation.updated_at }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-if="companyInformation" class="mt-3">
+        <button class="btn btn-sm btn-danger space" @click="deleteCompany(companyInformation.id)">Delete</button>
+      </div>
              
      <!-- <ul class="list-group">
       
