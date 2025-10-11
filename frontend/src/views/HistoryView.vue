@@ -19,35 +19,33 @@
     <!-- Results Table -->
     <div class="card p-3 shadow-sm">
       <h5 class="text-center">History Records</h5>
-      <div class="table-responsive">
-        <table class="table table-bordered mt-3 align-middle">
+      <div class="table-responsive responsive-table-wrapper">
+        <table class="table table-bordered mt-3 align-middle responsive-table">
           <thead class="table-light">
-              <tr class="bg-gray-200">
-      <th class="text-center border border-gray-300 px-2 py-1">ID</th>
-      <th class="text-center border border-gray-300 px-2 py-1">User ID</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Loan Type</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Status</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Loan Amount</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Interest Rate</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Monthly Installment</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Start Date</th>
-      <th class="text-center border border-gray-300 px-2 py-1">End Date</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Created At</th>
-    </tr>
+            <tr class="bg-gray-200">
+              <th class="text-center border border-gray-300 px-2 py-1">ID</th>
+              <th class="text-center border border-gray-300 px-2 py-1">User ID</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Loan Type</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Status</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Loan Amount</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Interest Rate</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Monthly Installment</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Start Date</th>
+              <th class="text-center border border-gray-300 px-2 py-1">End Date</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Created At</th>
+            </tr>
           </thead>
           <tbody>
             <tr v-for="item in history" :key="item.id">
-           <td class="text-center">{{ item.id }}</td>
-  <td class="text-center">{{ item.user_id }}</td>
-  <td class="text-center">{{ item.loan_type }}</td>
-  <td class="text-center">{{ item.status }}</td>
-  <td class="text-center">{{ item.loan_amount }}</td>
-  <td class="text-center">{{ item.interest_rate }}%</td>
-  <td class="text-center">{{ item.monthly_installment }}</td>
-    <td class="text-center">{{ item.start_date }}</td>
-
-
-      <td class="text-center">{{ item.end_date }}</td>
+              <td class="text-center">{{ item.id }}</td>
+              <td class="text-center">{{ item.user_id }}</td>
+              <td class="text-center">{{ item.loan_type }}</td>
+              <td class="text-center">{{ item.status }}</td>
+              <td class="text-center">{{ item.loan_amount }}</td>
+              <td class="text-center">{{ item.interest_rate }}%</td>
+              <td class="text-center">{{ item.monthly_installment }}</td>
+              <td class="text-center">{{ item.start_date }}</td>
+              <td class="text-center">{{ item.end_date }}</td>
               <td class="text-center">
                 <a
                   :href="item.file_path"
@@ -62,7 +60,7 @@
               </td>
             </tr>
             <tr v-if="!history.length">
-              <td colspan="5" class="text-center">No history found.</td>
+              <td colspan="10" class="text-center">No history found.</td>
             </tr>
           </tbody>
         </table>
@@ -183,11 +181,17 @@ onMounted(fetchHistory)
     min-width: unset;
     max-width: unset;
   }
-  .table-responsive {
+  /* Responsive table styles */
+  .responsive-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .responsive-table {
+    min-width: 700px;
     font-size: 0.95rem;
   }
-  .table th,
-  .table td {
+  .responsive-table th,
+  .responsive-table td {
     padding: 0.5rem 0.25rem;
   }
 }
