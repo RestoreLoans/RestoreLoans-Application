@@ -11,7 +11,7 @@
 
         <div class="col-12 col-md-5 text-center text-md-left">
           <h6 class="mb-2">Contact</h6>
-          <p class="mb-1 small">Email: <a class="text-light" href="mailto:info@restoreloans.com">info@restoreloans.com</a></p>
+          <p class="mb-1 small">Email: <a class="text-light" href="mailto:info@restoreloans.co.za">info@restoreloans.co.za</a></p>
           <p class="mb-1 small">Phone: <a class="text-light" href="tel:+27747776140">+27 74 777 6140</a></p>
           <p class="mb-0 small">Address: 62 Beacon Road, Florida North 1709</p>
         </div>
