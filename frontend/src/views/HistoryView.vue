@@ -9,9 +9,6 @@
         <div class="col-12 col-md-4 mb-2 d-flex justify-content-center">
           <input v-model="filters.user_id" type="number" placeholder="User ID" class="form-control text-center filter-input" />
         </div>
-        <div class="col-12 col-md-4 mb-2 d-flex justify-content-center">
-          <input v-model="filters.loan_id" type="number" placeholder="Loan ID" class="form-control text-center filter-input" />
-        </div>
         <br/>
         <div class="col-12 col-md-4 mb-2 d-flex justify-content-center">
           <button @click="fetchHistory" class="btn btn-primary w-100 w-md-auto filter-btn">Search</button>
@@ -22,50 +19,44 @@
     <!-- Results Table -->
     <div class="card p-3 shadow-sm">
       <h5 class="text-center">History Records</h5>
-      <div class="table-responsive">
-        <table class="table table-bordered mt-3 align-middle">
+      <div class="table-responsive responsive-table-wrapper">
+        <table class="table table-bordered mt-3 align-middle responsive-table">
           <thead class="table-light">
-              <tr class="bg-gray-200">
-      <th class="text-center border border-gray-300 px-2 py-1">ID</th>
-      <th class="text-center border border-gray-300 px-2 py-1">User ID</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Loan Type</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Status</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Loan Amount</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Interest Rate</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Monthly Installment</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Start Date</th>
-      <th class="text-center border border-gray-300 px-2 py-1">End Date</th>
-      <th class="text-center border border-gray-300 px-2 py-1">Created At</th>
-    </tr>
+            <tr class="bg-gray-200">
+              <th class="text-center border border-gray-300 px-2 py-1">ID</th>
+              <th class="text-center border border-gray-300 px-2 py-1">User ID</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Loan Type</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Status</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Loan Amount</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Interest Rate</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Monthly Installment</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Start Date</th>
+              <th class="text-center border border-gray-300 px-2 py-1">End Date</th>
+              <th class="text-center border border-gray-300 px-2 py-1">Created At</th>
+            </tr>
           </thead>
           <tbody>
             <tr v-for="item in history" :key="item.id">
-           <td class="text-center">{{ item.id }}</td>
-  <td class="text-center">{{ item.user_id }}</td>
-  <td class="text-center">{{ item.loan_type }}</td>
-  <td class="text-center">{{ item.status }}</td>
-  <td class="text-center">{{ item.loan_amount }}</td>
-  <td class="text-center">{{ item.interest_rate }}%</td>
-  <td class="text-center">{{ item.monthly_installment }}</td>
-    <td class="text-center">{{ item.start_date }}</td>
-
-
-      <td class="text-center">{{ item.end_date }}</td>
+              <td class="text-center">{{ item.id }}</td>
+              <td class="text-center">{{ item.user_id }}</td>
+              <td class="text-center">{{ item.loan_type }}</td>
+              <td class="text-center">{{ item.status }}</td>
+              <td class="text-center">{{ item.loan_amount }}</td>
+              <td class="text-center">{{ item.interest_rate }}%</td>
+              <td class="text-center">{{ item.monthly_installment }}</td>
+              <td class="text-center">{{ item.start_date }}</td>
+              <td class="text-center">{{ item.end_date }}</td>
               <td class="text-center">
-                <a
-                  :href="item.file_path"
+                <button
                   class="btn btn-success btn-sm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  :download="`statement-${item.id}.pdf`"
-                  v-if="item.file_path && item.file_path.endsWith('.pdf')"
+                  @click="downloadLoanPdf(item.id)"
                 >
-                  Download
-                </a>
+                  Download PDF
+                </button>
               </td>
             </tr>
             <tr v-if="!history.length">
-              <td colspan="5" class="text-center">No history found.</td>
+              <td colspan="10" class="text-center">No history found.</td>
             </tr>
           </tbody>
         </table>
@@ -84,7 +75,6 @@ import { useDashboardAuthStore } from '../stores/dashboard'
 const authStore = useAuthStore()
 const dashboardStore = useDashboardAuthStore()
 
-const loandata = ref([])
 
 const history = ref([])
 const filters = ref({
@@ -94,17 +84,64 @@ const filters = ref({
 onMounted(() => {
   try {
     console.log("logged in");
- dashboardStore.getYourLoans()
-history.value = dashboardStore.loans;
-
-  
+    // Only call getYourLoans with a valid user_id if needed
+    if (authStore.user && authStore.user.id) {
+      dashboardStore.getYourLoans(authStore.user.id)
+    } else {
+      dashboardStore.getYourLoans()
+    }
+    history.value = dashboardStore.loans;
   } catch (error) {
     console.error('Failed to fetch history:', error)
   }
 })
 
 const fetchHistory = async () => {
+  try {
+    let url = '';
+    if (filters.value.loan_id) {
+      url = `http://127.0.0.1:8000/loans/${filters.value.loan_id}`;
+    } else if (filters.value.user_id) {
+      url = `http://127.0.0.1:8000/loans?user_id=${filters.value.user_id}`;
+    } else {
+      url = 'http://127.0.0.1:8000/loans';
+    }
+    const response = await axios.get(url);
+    // If response is a single object, wrap in array for table
+    if (Array.isArray(response.data)) {
+      history.value = response.data;
+    } else if (response.data) {
+      history.value = [response.data];
+    } else {
+      history.value = [];
+    }
+  } catch (error) {
+    console.error('Failed to fetch history:', error);
+    history.value = [];
+  }
+}
 
+const downloadLoanPdf = async (loanId) => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/loans/${loanId}/pdf`, {
+      responseType: 'blob'
+    });
+    if (response.status === 200) {
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `loan-${loanId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } else {
+      alert('Failed to download PDF: Invalid response from server.');
+    }
+  } catch (error) {
+    alert('Failed to download PDF. Please try again later.');
+    console.error('Failed to download PDF:', error);
+  }
 }
 
 onMounted(fetchHistory)
@@ -162,11 +199,17 @@ onMounted(fetchHistory)
     min-width: unset;
     max-width: unset;
   }
-  .table-responsive {
+  /* Responsive table styles */
+  .responsive-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .responsive-table {
+    min-width: 700px;
     font-size: 0.95rem;
   }
-  .table th,
-  .table td {
+  .responsive-table th,
+  .responsive-table td {
     padding: 0.5rem 0.25rem;
   }
 }

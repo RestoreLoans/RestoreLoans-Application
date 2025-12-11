@@ -23,7 +23,7 @@
         </div>
 
         <div class="form-group mb-3">
-          <label for="amount">Payment Amount ($)</label>
+          <label for="amount">Payment Amount (ZAR)</label>
           <input
             id="amount"
             v-model.number="form.amount"
