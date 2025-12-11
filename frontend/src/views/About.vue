@@ -1,172 +1,125 @@
 <template>
-  <div class="about-container">
-    <div class="about-card">
-      <h1>About Restore Loans</h1>
-      <p>
-        Restore Loans is a modern financial institution dedicated to providing
-        accessible and transparent lending solutions to individuals and businesses.
-      </p>
+  <section class="py-5">
+    <div class="container">
+      <div class="card about-card shadow-sm">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-lg-8">
+              <h1 class="mb-3">About Restore Loans</h1>
+              <p class="lead text-muted">
+                Restore Loans is a modern financial institution dedicated to providing
+                accessible and transparent lending solutions to individuals and businesses.
+              </p>
 
-      <h2>Our Mission</h2>
-      <p>
-        To restore financial freedom by providing fair, transparent, and accessible
-        lending solutions that help our customers achieve their dreams and goals.
-      </p>
+              <h2 class="mt-4">Our Mission</h2>
+              <p>
+                To restore financial freedom by providing fair, transparent, and accessible
+                lending solutions that help our customers achieve their dreams and goals.
+              </p>
 
-      <h2>Our Values</h2>
-      <ul class="values-list">
-        <li><strong>Transparency:</strong> Clear terms and no hidden fees</li>
-        <li><strong>Accessibility:</strong> Simple application process</li>
-        <li><strong>Reliability:</strong> Dependable service and support</li>
-        <li><strong>Innovation:</strong> Modern technology for better experience</li>
-      </ul>
+              <h2 class="mt-4">Our Values</h2>
+              <ul class="values-list list-unstyled">
+                <li class="mb-2"><strong>Transparency:</strong> Clear terms and no hidden fees</li>
+                <li class="mb-2"><strong>Accessibility:</strong> Simple application process</li>
+                <li class="mb-2"><strong>Reliability:</strong> Dependable service and support</li>
+                <li class="mb-2"><strong>Innovation:</strong> Modern technology for better experience</li>
+              </ul>
+            </div>
 
-      <h2>Loan Process</h2>
-      <div class="process-steps">
-        <div class="step">
-          <h3>1. Application</h3>
-          <p>Complete our simple online application form with your personal and financial information.</p>
-        </div>
-        <div class="step">
-          <h3>2. Review</h3>
-          <p>Our team reviews your application and verifies the provided information.</p>
-        </div>
-        <div class="step">
-          <h3>3. Approval</h3>
-          <p>Once approved, you'll receive your loan terms and conditions.</p>
-        </div>
-        <div class="step">
-          <h3>4. Disbursement</h3>
-          <p>Funds are transferred to your designated bank account.</p>
+            <aside class="col-12 col-lg-4 mt-4 mt-lg-0">
+              <div class="border rounded p-3 bg-light">
+                <h5 class="mb-2">Contact</h5>
+                <p class="mb-1 small">Email: <a href="mailto:support@restoreloans.co.za">support@restoreloans.co.za</a></p>
+                <p class="mb-1 small">Phone: 1-800-RESTORE</p>
+                <p class="mb-0 small">Hours: Mon–Fri, 9 AM – 6 PM</p>
+              </div>
+
+              <div class="mt-3 bg-warning p-3 rounded">
+                <h6 class="mb-2">Important</h6>
+                <p class="small mb-2">Missing loan repayments can have serious consequences:</p>
+                <ul class="small mb-0">
+                  <li>Late fees and additional interest charges</li>
+                  <li>Negative impact on your credit score</li>
+                  <li>Legal action may be taken</li>
+                </ul>
+              </div>
+            </aside>
+          </div>
+
+          <hr class="my-4" />
+
+          <h2 class="mb-3">Loan Process</h2>
+          <div class="row gx-3 gy-3">
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="step p-3 h-100">
+                <h3 class="h6">1. Application</h3>
+                <p class="small mb-0">Complete our simple online application form with your personal and financial information.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="step p-3 h-100">
+                <h3 class="h6">2. Review</h3>
+                <p class="small mb-0">Our team reviews your application and verifies the provided information.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="step p-3 h-100">
+                <h3 class="h6">3. Approval</h3>
+                <p class="small mb-0">Once approved, you'll receive your loan terms and conditions.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="step p-3 h-100">
+                <h3 class="h6">4. Disbursement</h3>
+                <p class="small mb-0">Funds are transferred to your designated bank account.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <h2>Important Information</h2>
-      <div class="warning-box">
-        <h3>Missed Repayments</h3>
-        <p>Missing loan repayments can have serious consequences:</p>
-        <ul>
-          <li>Late fees and additional interest charges</li>
-          <li>Negative impact on your credit score</li>
-          <li>Legal action may be taken</li>
-          <li>Potential asset seizure for secured loans</li>
-        </ul>
-        <p><strong>Please ensure you can afford the repayments before applying for a loan.</strong></p>
-      </div>
-
-      <h2>Contact Us</h2>
-      <p>For any questions or support, please contact our customer service team:</p>
-      <ul class="contact-list">
-        <li>Email: support@restoreloans.com</li>
-        <li>Phone: 1-800-RESTORE</li>
-        <li>Hours: Monday–Friday, 9 AM – 6 PM</li>
-      </ul>
     </div>
-  </div>
+  </section>
 </template>
 
 
 <style scoped>
-.about-container {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 0 20px;
+.about-card {
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.about-card {
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+.about-card .card-body {
+  padding: 1.75rem;
 }
 
 .about-card h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: #2c3e50;
+  color: #003a77;
+  font-weight: 600;
 }
 
 .about-card h2 {
-  font-size: 1.6rem;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
   color: #343a40;
-}
-
-.about-card p {
-  margin-bottom: 1rem;
-  color: #555;
-  line-height: 1.6;
-}
-
-.values-list {
-  padding-left: 20px;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .values-list li {
-  margin-bottom: 0.6rem;
-}
-
-.process-steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin: 30px 0;
+  margin-bottom: 0.5rem;
 }
 
 .step {
   background: #f8f9fa;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  border: 1px solid #e2e6ea;
-  transition: transform 0.2s ease;
-}
-
-.step:hover {
-  transform: translateY(-3px);
-}
-
-.step h3 {
-  color: #007bff;
-  margin-bottom: 10px;
-}
-
-.warning-box {
-  background: #fff3cd;
-  border: 1px solid #ffeaa7;
-  padding: 20px;
   border-radius: 8px;
-  margin-top: 20px;
+  border: 1px solid #e9ecef;
 }
 
-.warning-box h3 {
-  color: #856404;
-  margin-bottom: 10px;
-}
-
-.warning-box ul {
-  margin: 10px 0;
-  padding-left: 20px;
-}
-
-.contact-list {
-  padding-left: 20px;
-}
-
-.contact-list li {
-  margin-bottom: 0.5rem;
-}
-
-/* Responsive typography */
-@media (max-width: 600px) {
-  .about-card h1 {
-    font-size: 2rem;
+/* small adjustments */
+@media (max-width: 576px) {
+  .about-card .card-body {
+    padding: 1rem;
   }
 
-  .about-card h2 {
-    font-size: 1.3rem;
+  .about-card h1 {
+    font-size: 1.6rem;
   }
 }
 </style>
