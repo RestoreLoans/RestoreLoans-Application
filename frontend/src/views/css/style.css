@@ -1,4 +1,4 @@
-/* Reset and Base Styles */
+/*Reset and Base Styles
 * {
   margin: 0;
   padding: 0;
@@ -11,7 +11,7 @@ body {
   line-height: 1.6;
 }
 
-/* Buttons */
+/* Buttons
 .btn {
   padding: 10px 20px;
   border: none;
@@ -35,7 +35,7 @@ body {
   color: white;
 }
 
-/* Forms */
+/* Forms 
 .form-group {
   margin-bottom: 20px;
 }
@@ -55,7 +55,7 @@ body {
   font-size: 1rem;
 }
 
-/* Cards */
+/* Cards 
 .card {
   background: white;
   border-radius: 10px;
@@ -65,7 +65,7 @@ body {
 }
 
 
-/* Hero Section */
+/* Hero Section
 .hero {
   background: linear-gradient(135deg, #667eea 0%, #110918 100%);
   color: white;
@@ -83,7 +83,7 @@ body {
   margin-bottom: 30px;
 }
 
-/* Calculator Section */
+/* Calculator Section
 .calculator {
   background: white;
   padding: 30px;
@@ -93,7 +93,7 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* Dashboard Grid */
+/* Dashboard Grid 
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -115,7 +115,7 @@ body {
   margin-bottom: 10px;
 }
 
-/* Quick Actions */
+/* Quick Actions 
 .quick-actions {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -136,7 +136,7 @@ body {
   transform: translateY(-5px);
 }
 
-/* Footer */
+/* Footer 
 .footer {
   background: linear-gradient(135deg, #667eea 0%, #110918 100%);
   color: #fff;
@@ -193,8 +193,8 @@ body {
   font-size: 0.85rem;
 }
 
-/* Responsive Styles */
-/* Navbar Container */
+/* Responsive Styles 
+/* Navbar Container 
 .navbar {
   background: linear-gradient(135deg, #667eea 0%, #110918 100%);
   color: white;
@@ -204,7 +204,7 @@ body {
   z-index: 1000;
 }
 
-/* Layout wrapper */
+/* Layout wrapper
 .navbar-content {
   display: flex;
   justify-content: space-between;
@@ -214,7 +214,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* Brand styling */
+/* Brand styling 
 .navbar-brand {
   font-size: 1.5rem;
   font-weight: bold;
@@ -222,14 +222,14 @@ body {
   text-decoration: none;
 }
 
-/* Navbar links container */
+/* Navbar links container 
 .navbar-nav {
   display: flex;
   gap: 1.5rem;
   list-style: none;
 }
 
-/* Navbar links */
+/* Navbar links 
 .navbar-nav a {
   color: white;
   text-decoration: none;
@@ -241,13 +241,13 @@ body {
   color: #007bff;
 }
 
-/* Button inside nav */
+/* Button inside nav 
 .navbar-nav .btn {
   font-size: 1rem;
   padding: 8px 16px;
 }
 
-/* Hamburger button */
+/* Hamburger button 
 .navbar-toggler {
   display: none;
   background: none;
@@ -257,7 +257,7 @@ body {
   cursor: pointer;
 }
 
-/* Responsive Styles */
+/* Responsive Styles 
 @media (max-width: 768px) {
   .navbar-content {
     flex-direction: column;
@@ -290,3 +290,4 @@ body {
     margin-bottom: 0;
   }
 }
+ */

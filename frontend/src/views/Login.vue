@@ -1,9 +1,12 @@
 <template>
-  <div class="login-container">
-    <div class="card login-card">
-      <h2 class="text-center mb-4">Login</h2>
+  <section class="py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-5">
+          <div class="card login-card p-4 shadow-sm">
+            <h2 class="text-center mb-4">Login</h2>
 
-      <form @submit.prevent="handleLogin">
+            <form @submit.prevent="handleLogin">
         <div class="form-group mb-3">
           <label>Email</label>
           <input
@@ -41,15 +44,17 @@
         Don't have an account?
         <router-link to="/register">Register</router-link>
       </p>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import '../views/css/login.css'
 
 
 

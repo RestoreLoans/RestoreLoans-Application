@@ -1,40 +1,27 @@
 <template>
-  <nav class="navbar">
-    <div class="navbar-content container">
+  <nav class="navbar navbar-expand-md">
+    <div class="container">
       <router-link to="/" class="navbar-brand">
         Restore Loans
       </router-link>
 
-      <button
-        class="navbar-toggler"
-        @click="menuOpen = !menuOpen"
-        :aria-expanded="menuOpen"
-        aria-label="Toggle navigation"
-      >
-        ☰
+      <button class="navbar-toggler" type="button" @click="menuOpen = !menuOpen">
+        <span class="navbar-toggler-icon">☰</span>
       </button>
 
-      <ul :class="['navbar-nav', { open: menuOpen }]">
-        <li><router-link to="/" @click="closeMenu">Home</router-link></li>
-        <li><router-link to="/about" @click="closeMenu">About</router-link></li>
-        <li><router-link to="/company" @click="closeMenu">Company</router-link></li>
-        <li><router-link to="/bank" @click="closeMenu">Bank</router-link></li>
-        <li v-if="!isAuthenticated">
-          <router-link to="/login" @click="closeMenu">Login</router-link>
-        </li>
-        <li v-if="!isAuthenticated">
-          <router-link to="/register" @click="closeMenu">Register</router-link>
-        </li>
-        <li v-if="isAuthenticated">
-          <router-link to="/dashboard" @click="closeMenu">Dashboard</router-link>
-        </li>
-        <li v-if="isAuthenticated">
-          <router-link to="/historyview" @click="closeMenu">History</router-link>
-        </li>
-        <li v-if="isAuthenticated">
-          <button @click="handleLogout" class="btn btn-secondary">Logout</button>
-        </li>
-      </ul>
+      <div :class="['collapse navbar-collapse', { show: menuOpen }]">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><router-link class="nav-link" to="/" @click="closeMenu">Home</router-link></li>
+          <li class="nav-item"><router-link class="nav-link" to="/about" @click="closeMenu">About</router-link></li>
+          <!-- <li class="nav-item"><router-link class="nav-link" to="/company" @click="closeMenu">Company</router-link></li>
+          <li class="nav-item"><router-link class="nav-link" to="/bank" @click="closeMenu">Bank</router-link></li> -->
+          <li v-if="!isAuthenticated" class="nav-item"><router-link class="nav-link" to="/login" @click="closeMenu">Login</router-link></li>
+          <li v-if="!isAuthenticated" class="nav-item"><router-link class="nav-link" to="/register" @click="closeMenu">Register</router-link></li>
+          <li v-if="isAuthenticated" class="nav-item"><router-link class="nav-link" to="/dashboard" @click="closeMenu">Dashboard</router-link></li>
+          <li v-if="isAuthenticated" class="nav-item"><router-link class="nav-link" to="/historyview" @click="closeMenu">History</router-link></li>
+          <li v-if="isAuthenticated" class="nav-item"><button @click="handleLogout" class="btn btn-outline-light ms-2">Logout</button></li>
+        </ul>
+      </div>
     </div>
   </nav>
 </template>
@@ -43,7 +30,9 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import '../views/css/style.css'
+
+// Import Bootstrap CSS only (Bootstrap-Vue is Vue 2 only)
+import 'bootstrap/dist/css/bootstrap.css'
 
 const router = useRouter()
 const authStore = useAuthStore()

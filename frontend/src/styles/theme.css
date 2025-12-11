@@ -1,0 +1,79 @@
+/* Theme overrides using Bootstrap classes and custom variables */
+:root{
+  --bs-primary: #0066cc; /* darker blue */
+  --bs-secondary: #6c757d;
+  --bs-success: #28a745;
+  --bs-info: #17a2b8;
+  --bs-warning: #ffc107;
+  --bs-danger: #dc3545;
+  --app-bg: #f4f7fb;
+  --card-bg: #ffffff;
+  --muted: #6c757d;
+}
+
+body{
+  background: var(--app-bg);
+  color: #222;
+}
+
+.navbar{
+  background: linear-gradient(90deg,var(--bs-primary), #004a99);
+  color: #fff;
+}
+
+.navbar .navbar-brand{
+  color: #fff;
+  font-weight: 700;
+}
+
+.navbar .navbar-nav a{
+  color: rgba(255,255,255,0.9);
+}
+
+.navbar .navbar-nav a:hover{
+  color: #fff;
+  text-decoration: none;
+}
+
+.card{
+  background: var(--card-bg);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(2,6,23,0.06);
+}
+
+.card h4, .card h5{
+  color: var(--bs-primary);
+}
+
+.btn-primary{
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+
+.btn-primary:hover{
+  background-color: #005bb5;
+  border-color: #0051a3;
+}
+
+.footer{
+  background: #0b2240;
+  color: #dfeffd;
+  padding: 20px 0;
+}
+
+/* Make table headers a bit subtler */
+.table thead th{
+  background: rgba(0,0,0,0.03);
+  color: #27323a;
+}
+
+/* Inputs */
+.form-control{
+  border-radius: 8px;
+}
+
+/* Responsive small tweaks */
+@media (max-width: 767px){
+  .navbar .navbar-brand{font-size:1.05rem}
+}

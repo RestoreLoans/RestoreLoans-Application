@@ -1,75 +1,79 @@
 <template>
-  <div class="register-container">
-    <div class="card register-card">
-      <h2 class="text-center mb-4">Create Account</h2>
-      
-      <form @submit.prevent="handleRegister">
-        <div class="form-group mb-3">
-          <label>First Name</label>
-          <input v-model="form.firstName" type="text" class="form-control" required>
-        </div>
-        
-        <div class="form-group mb-3">
-          <label>Last Name</label>
-          <input v-model="form.lastName" type="text" class="form-control" required>
-        </div>
-        
-        <div class="form-group mb-3">
-          <label>Email</label>
-          <input v-model="form.email" type="email" class="form-control" required>
-        </div>
-        
-        <div class="form-group mb-3">
-          <label>Password</label>
-          <input v-model="form.password" type="password" class="form-control" required>
-        </div>
-        
-        <div class="form-group mb-3">
-          <label>Confirm Password</label>
-          <input v-model="form.confirmPassword" type="password" class="form-control" required>
-        </div>
-        
-        <div class="form-group mb-3">
-          <label>ID Number</label>
-          <input v-model="form.idNumber" type="text" class="form-control" required>
-        </div>
-        
-        <div class="form-group mb-3">
-          <label>Phone Number</label>
-          <input v-model="form.phoneNumber" type="text" class="form-control" required>
-        </div>
-        
-        <div class="form-group mb-4">
-          <label>Gender</label>
-          <select v-model="form.gender" class="form-control" required>
-            <option disabled value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        
-        <button type="submit" class="btn btn-primary w-100" :disabled="loading">
-          {{ loading ? 'Registering...' : 'Register' }}
-        </button>
+  <section class="py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+          <div class="card register-card p-4 shadow-sm">
+            <h2 class="text-center mb-4">Create Account</h2>
 
-        <div v-if="error" class="alert alert-danger mt-3">
-          {{ error }}
+            <form @submit.prevent="handleRegister">
+              <div class="form-group mb-3">
+                <label>First Name</label>
+                <input v-model="form.firstName" type="text" class="form-control" required>
+              </div>
+
+              <div class="form-group mb-3">
+                <label>Last Name</label>
+                <input v-model="form.lastName" type="text" class="form-control" required>
+              </div>
+
+              <div class="form-group mb-3">
+                <label>Email</label>
+                <input v-model="form.email" type="email" class="form-control" required>
+              </div>
+
+              <div class="form-group mb-3">
+                <label>Password</label>
+                <input v-model="form.password" type="password" class="form-control" required>
+              </div>
+
+              <div class="form-group mb-3">
+                <label>Confirm Password</label>
+                <input v-model="form.confirmPassword" type="password" class="form-control" required>
+              </div>
+
+              <div class="form-group mb-3">
+                <label>ID Number</label>
+                <input v-model="form.idNumber" type="text" class="form-control" required>
+              </div>
+
+              <div class="form-group mb-3">
+                <label>Phone Number</label>
+                <input v-model="form.phoneNumber" type="text" class="form-control" required>
+              </div>
+
+              <div class="form-group mb-4">
+                <label>Gender</label>
+                <select v-model="form.gender" class="form-control" required>
+                  <option disabled value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100" :disabled="loading">
+                {{ loading ? 'Registering...' : 'Register' }}
+              </button>
+
+              <div v-if="error" class="alert alert-danger mt-3">
+                {{ error }}
+              </div>
+            </form>
+
+            <p class="text-center mt-3">
+              Already have an account? <router-link to="/login">Login</router-link>
+            </p>
+          </div>
         </div>
-      </form>
-      
-      <p class="text-center mt-3">
-        Already have an account? <router-link to="/login">Login</router-link>
-      </p>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
- 
-import '../views/css/reg.css'
 import api from '../services/api'
 import { useAuthStore } from '../stores/auth'; // adjust path if needed
 

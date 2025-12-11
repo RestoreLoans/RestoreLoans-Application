@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "element-plus": "^2.11.4"
+    "bootstrap": "^4.6.2",
+    "element-plus": "^2.11.4",
+    "vue": "^3.5.25"
   }
 }

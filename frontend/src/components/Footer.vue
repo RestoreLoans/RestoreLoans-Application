@@ -22,5 +22,6 @@
 </template>
 
 <script setup>
-import '../views/css/style.css'
+// Keep only Bootstrap CSS; remove bootstrap-vue (Vue 2 only)
+import 'bootstrap/dist/css/bootstrap.css'
 </script>

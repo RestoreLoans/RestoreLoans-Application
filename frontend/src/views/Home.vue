@@ -12,39 +12,40 @@
 
     <!-- Calculator Section -->
     <section class="calculator py-5">
-    
-        <div class="card p-4 shadow-sm">
-          <h2 class="mb-4 text-center">Loan Calculator</h2>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+            <div class="card p-4 shadow-sm">
+              <h2 class="mb-4 text-center">Loan Calculator</h2>
 
-          <div class="form-group mb-3">
-            <label>Loan Amount (R)</label>
-            <input v-model="loanAmount" type="number" class="form-control" placeholder="Enter amount" />
+              <form @submit.prevent="handleButtonClick">
+                <div class="form-group mb-3">
+                  <label>Loan Amount (R)</label>
+                  <input v-model="loanAmount" type="number" class="form-control" placeholder="Enter amount" />
+                </div>
+
+                <div class="form-group mb-4">
+                  <label>Loan Duration (months)</label>
+                  <select v-model="loanDuration" class="form-control">
+                    <option value="">Select Loan Duration</option>
+                    <option value="1">1 month</option>
+                  </select>
+                </div>
+
+                <div v-if="calculation" class="result card p-3 mt-3 bg-light border">
+                  <h4 class="mb-3 text-center">Loan Details</h4>
+                  <p><strong>Monthly Payment:</strong> R{{ calculation.monthlyPayment }}</p>
+                  <p><strong>Total Amount Repayable:</strong> R{{ calculation.totalAmount }}</p>
+                  <p><strong>Interest Rate:</strong> {{ calculation.interestRate }}% per month</p>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-3">
+                  {{ calculation ? 'Apply Now' : 'Calculate' }}
+                </button>
+              </form>
+            </div>
           </div>
-
-          <div class="form-group mb-4">
-            <label>Loan Duration (months)</label>
-            <select v-model="loanDuration" class="form-control">
-              <option value="">Select Loan Duration</option>
-              <option value="1">1 month</option>
-              
-            </select>
-          </div>
-
-          
-
-          <div v-if="calculation" class="result card p-3 mt-3 bg-light border">
-            <h4 class="mb-3 text-center">Loan Details</h4>
-            <p><strong>Monthly Payment:</strong> R{{ calculation.monthlyPayment }}</p>
-            <p><strong>Total Amount Repayable:</strong> R{{ calculation.totalAmount }}</p>
-            <p><strong>Interest Rate:</strong> {{ calculation.interestRate }}% per month</p>
-          </div>
-          <button
-            @click="handleButtonClick"
-            class="btn btn-primary w-100 mb-3"
-          >
-            {{ calculation ? 'Apply Now' : 'Calculate' }}
-          </button>
-     
+        </div>
       </div>
     </section>
   </div>
